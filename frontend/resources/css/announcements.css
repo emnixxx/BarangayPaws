@@ -1,0 +1,353 @@
+/* BarangayPaws Announcements */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --sidebar-width: 240px;
+    --bg: #f9fbf9; /* slight tint as seen in screenshot */
+    --surface: #ffffff;
+    --surface-2: #f7faf8;
+    --border: #e3ede8;
+    --text-primary: #1a2e24;
+    --text-secondary: #5a7a6a;
+    --text-muted: #90afa3;
+    --green-primary: #1a3a2a;
+    --green-accent: #2d8a5e;
+    --green-light: #e8f5ef;
+    --green-mid: #4caf7d;
+    --orange: #e07030;
+    --orange-light: #fff3eb;
+    --purple: #7c5cbf;
+    --purple-light: #f0ebff;
+    --red: #d94f4f;
+    --red-light: #fff0f0;
+    --blue: #2e7bbf;
+    --blue-dark: #2b3950;
+    --shadow-sm: 0 1px 3px rgba(30,60,40,0.07), 0 1px 2px rgba(30,60,40,0.05);
+    --shadow-md: 0 4px 12px rgba(30,60,40,0.09), 0 2px 4px rgba(30,60,40,0.06);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --transition: 0.2s ease;
+    --font: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Page content */
+.page-content {
+    padding: 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ─── Top controls ─── */
+.announcements-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+}
+
+.btn-primary {
+    background: var(--green-primary);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background var(--transition);
+}
+
+.btn-primary:hover {
+    background: #112a1e;
+}
+
+/* ─── Table Card ─── */
+.announcements-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+}
+
+.announcements-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.announcements-table th {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--blue-dark); /* matches blue tint in screenshot */
+    text-transform: capitalize;
+    padding: 0 0 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.announcements-table td {
+    padding: 18px 0;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.announcements-table tr:hover td {
+    background-color: #fafdfb;
+}
+
+.announcements-table tr:last-child td {
+    border-bottom: none;
+}
+
+.title-cell {
+    color: var(--text-primary);
+    font-weight: 500;
+    cursor: pointer; /* To open view modal */
+}
+
+.title-cell:hover {
+    color: var(--green-accent);
+}
+
+.light-text {
+    color: var(--text-muted);
+}
+
+/* ─── Category Badges ─── */
+.cat-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+}
+.cat-badge.kapon { background: #f0ebff; color: #7c5cbf; }
+.cat-badge.vax { background: #e8f5ef; color: #2d8a5e; }
+.cat-badge.deworm { background: #ebfcf9; color: #20a08e; }
+.cat-badge.general { background: #f2f5f7; color: #788a99; }
+.cat-badge.spay { background: #fff3eb; color: #e07030; }
+
+/* ─── Action Buttons ─── */
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-icon-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.action-icon-btn svg { width: 14px; height: 14px; }
+
+.action-icon-btn.view { color: var(--text-muted); }
+.action-icon-btn.view:hover { color: var(--green-accent); background: var(--green-light); }
+
+.action-icon-btn.edit { color: var(--blue); }
+.action-icon-btn.edit:hover { background: var(--blue-light); }
+
+.action-icon-btn.delete { color: var(--red); }
+.action-icon-btn.delete:hover { background: var(--red-light); }
+
+/* ─── Modals ─── */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-container {
+    background: var(--surface);
+    width: 90%;
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow-lg);
+    transform: scale(0.95) translateY(10px);
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-container.form-modal { max-width: 580px; }
+.modal-container.view-modal { max-width: 500px; }
+
+.modal-overlay.active .modal-container {
+    transform: scale(1) translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.modal-close:hover { background: var(--surface-2); color: var(--text-primary); }
+
+/* Form styles */
+.form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: 13.5px;
+    color: var(--text-primary);
+    background: var(--surface);
+    outline: none;
+    transition: border-color var(--transition);
+}
+
+.form-input::placeholder { color: var(--text-muted); }
+.form-input:focus { border-color: var(--green-mid); }
+.form-textarea { resize: vertical; min-height: 100px; }
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between; /* To match screenshot gap strategy, we'll use gap and center/flex-end if needed */
+    gap: 16px;
+    margin-top: 32px;
+}
+
+/* Modals Buttons */
+.btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+    transition: background var(--transition);
+}
+
+.btn-outline:hover { background: var(--surface-2); }
+
+.btn-submit {
+    background: var(--green-primary);
+    color: #fff;
+    border: 1px solid var(--green-primary);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+    transition: background var(--transition);
+}
+
+.btn-submit:hover { background: #112a1e; }
+
+/* ─── View Modal specifics ─── */
+.view-modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.view-modal-badge { margin-bottom: 24px; }
+
+.view-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 16px;
+    margin-bottom: 24px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 11.5px;
+    color: var(--blue-dark);
+    font-weight: 600;
+}
+
+.detail-val {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+}
+
+.detail-full {
+    grid-column: 1 / -1;
+}
+
+.detail-p {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.btn-full { width: 100%; flex: none; }

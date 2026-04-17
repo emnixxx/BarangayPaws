@@ -1,0 +1,373 @@
+/* BarangayPaws Residents */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --sidebar-width: 240px;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f7faf8;
+    --border: #e3ede8;
+    --text-primary: #1a2e24;
+    --text-secondary: #5a7a6a;
+    --text-muted: #90afa3;
+    --green-primary: #1a3a2a;
+    --green-accent: #2d8a5e;
+    --green-light: #e8f5ef;
+    --green-mid: #4caf7d;
+    --orange: #e07030;
+    --orange-light: #fff3eb;
+    --purple: #7c5cbf;
+    --purple-light: #f0ebff;
+    --red: #d94f4f;
+    --red-light: #fff0f0;
+    --blue: #2e7bbf;
+    --blue-light: #eaf3ff;
+    --shadow-sm: 0 1px 3px rgba(30,60,40,0.07), 0 1px 2px rgba(30,60,40,0.05);
+    --shadow-md: 0 4px 12px rgba(30,60,40,0.09), 0 2px 4px rgba(30,60,40,0.06);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --transition: 0.2s ease;
+    --font: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+/* Layout */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.dashboard-main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* Topbar */
+.topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.topbar-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.topbar-icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    color: var(--text-secondary);
+    transition: border-color var(--transition), background var(--transition);
+}
+
+.topbar-icon-btn:hover {
+    background: var(--green-light);
+    border-color: var(--green-mid);
+    color: var(--green-accent);
+}
+
+.topbar-icon-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.topbar-notif-dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 7px;
+    height: 7px;
+    background: var(--orange);
+    border-radius: 50%;
+    border: 1.5px solid var(--surface);
+}
+
+.topbar-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--green-primary);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    border: 2px solid var(--green-mid);
+}
+
+/* Page content */
+.page-content {
+    padding: 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ─── Search Bar ─── */
+.residents-search-bar {
+    position: relative;
+    width: 320px;
+}
+
+.residents-search-bar .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.residents-search-bar input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--text-primary);
+    background: var(--surface);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.residents-search-bar input::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.residents-search-bar input:focus {
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(76, 175, 125, 0.12);
+}
+
+/* ─── Residents Card ─── */
+.residents-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    flex: 1;
+}
+
+.residents-card-header {
+    margin-bottom: 20px;
+}
+
+.residents-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.2px;
+}
+
+/* ─── Residents Table ─── */
+.residents-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.residents-table thead th {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 0 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.residents-table tbody tr {
+    transition: background var(--transition);
+}
+
+.residents-table tbody tr:hover {
+    background: var(--surface-2);
+}
+
+.residents-table tbody td {
+    padding: 14px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.residents-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Name cell with avatar */
+.resident-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.resident-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--green-primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+    border: 2px solid var(--green-mid);
+}
+
+.resident-fullname {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13.5px;
+}
+
+/* Status badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.2px;
+}
+
+.status-badge.active {
+    background: var(--green-light);
+    color: var(--green-accent);
+}
+
+.status-badge.inactive {
+    background: var(--red-light);
+    color: var(--red);
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all var(--transition);
+}
+
+.action-btn svg {
+    width: 15px;
+    height: 15px;
+}
+
+.action-btn.view-btn:hover {
+    border-color: var(--green-mid);
+    color: var(--green-accent);
+    background: var(--green-light);
+}
+
+.action-btn.delete-btn {
+    border-color: transparent;
+    background: var(--red-light);
+    color: var(--red);
+}
+
+.action-btn.delete-btn:hover {
+    background: #fdd;
+    color: #c33;
+}
+
+/* ─── Row fade-in animation ─── */
+@keyframes fadeInRow {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.residents-table tbody tr {
+    animation: fadeInRow 0.35s ease forwards;
+    opacity: 0;
+}
+
+.residents-table tbody tr:nth-child(1) { animation-delay: 0.04s; }
+.residents-table tbody tr:nth-child(2) { animation-delay: 0.08s; }
+.residents-table tbody tr:nth-child(3) { animation-delay: 0.12s; }
+.residents-table tbody tr:nth-child(4) { animation-delay: 0.16s; }
+.residents-table tbody tr:nth-child(5) { animation-delay: 0.20s; }
+.residents-table tbody tr:nth-child(6) { animation-delay: 0.24s; }
+.residents-table tbody tr:nth-child(7) { animation-delay: 0.28s; }
+.residents-table tbody tr:nth-child(8) { animation-delay: 0.32s; }
+.residents-table tbody tr:nth-child(9) { animation-delay: 0.36s; }
+.residents-table tbody tr:nth-child(10) { animation-delay: 0.40s; }
+
+/* ─── Responsive ─── */
+@media (max-width: 1100px) {
+    .residents-search-bar {
+        width: 100%;
+    }
+    .residents-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

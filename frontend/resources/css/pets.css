@@ -1,0 +1,358 @@
+/* BarangayPaws Pets */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --sidebar-width: 240px;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f7faf8;
+    --border: #e3ede8;
+    --text-primary: #1a2e24;
+    --text-secondary: #5a7a6a;
+    --text-muted: #90afa3;
+    --green-primary: #1a3a2a;
+    --green-accent: #2d8a5e;
+    --green-light: #e8f5ef;
+    --green-mid: #4caf7d;
+    --orange: #e07030;
+    --orange-light: #fff3eb;
+    --purple: #7c5cbf;
+    --purple-light: #f0ebff;
+    --red: #d94f4f;
+    --red-light: #fff0f0;
+    --blue: #2e7bbf;
+    --blue-light: #eaf3ff;
+    --shadow-sm: 0 1px 3px rgba(30,60,40,0.07), 0 1px 2px rgba(30,60,40,0.05);
+    --shadow-md: 0 4px 12px rgba(30,60,40,0.09), 0 2px 4px rgba(30,60,40,0.06);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --transition: 0.2s ease;
+    --font: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Page content */
+.page-content {
+    padding: 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ─── Summary Filters ─── */
+.pets-summary-filters {
+    display: flex;
+    gap: 12px;
+}
+
+.summary-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.summary-btn.active {
+    background: var(--green-primary);
+    color: #fff;
+    border-color: var(--green-primary);
+}
+
+.summary-btn .badge {
+    background: var(--surface-2);
+    color: var(--text-secondary);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    transition: all var(--transition);
+}
+
+.summary-btn.active .badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.summary-btn:hover:not(.active) {
+    border-color: var(--green-mid);
+    color: var(--green-accent);
+}
+
+/* ─── Main Filters ─── */
+.pets-main-filters {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.pets-search-box {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+}
+
+.pets-search-box svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.pets-search-box input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--text-primary);
+    background: var(--surface);
+    outline: none;
+    transition: border-color var(--transition);
+}
+
+.pets-search-box input:focus {
+    border-color: var(--green-mid);
+}
+
+.filter-select {
+    padding: 10px 32px 10px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: var(--surface);
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2390afa3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: border-color var(--transition);
+}
+
+.filter-select:hover {
+    border-color: var(--green-mid);
+}
+
+/* ─── Cards ─── */
+.pets-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.pending-card {
+    border-left: 4px solid var(--orange);
+    background: #fdfaf8; /* subtle tint */
+}
+
+.pets-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.pets-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.title-badge {
+    background: var(--green-primary);
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+/* ─── Table ─── */
+.pets-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pets-table th {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: capitalize;
+    padding: 0 0 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.pets-table td {
+    padding: 14px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.pets-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Name cell */
+.pet-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pet-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pet-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.pet-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13.5px;
+}
+
+.pet-breed {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* Badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+.status-badge.yes { background: var(--green-light); color: var(--green-accent); }
+.status-badge.no { background: var(--red-light); color: var(--red); }
+.status-badge.pending { background: var(--orange-light); color: var(--orange); }
+.status-badge.approved { background: var(--green-light); color: var(--green-accent); }
+
+/* Actions */
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-confirm {
+    background: var(--green-primary);
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-reject {
+    background: transparent;
+    color: var(--red);
+    border: 1px solid var(--red);
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.action-icon-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.action-icon-btn svg { width: 15px; height: 15px; }
+
+.action-icon-btn.view:hover { color: var(--green-accent); background: var(--green-light); }
+.action-icon-btn.edit:hover { color: var(--blue); background: var(--blue-light); }
+.action-icon-btn.delete:hover { color: var(--red); background: var(--red-light); }
+
+/* Pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.page-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.page-num {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.page-num.active {
+    background: var(--green-primary);
+    color: #fff;
+}

@@ -1,0 +1,10 @@
+@import './dashboard.css';
+@import './sidebar.css';
+@import './residents.css';
+@import './pets.css';
+@import './approvals.css';
+@import './announcements.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
