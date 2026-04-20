@@ -1,0 +1,228 @@
+/* ===== Audit Log Page ===== */
+
+/* Filters */
+.auditlog-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.filters-left {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter-btn {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #4b5563;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.15s, background 0.15s;
+    font-family: inherit;
+}
+
+.filter-btn:hover {
+    border-color: #9ca3af;
+    background: #f9fafb;
+}
+
+.search-box {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 280px;
+}
+
+.search-box svg {
+    color: #9ca3af;
+    flex-shrink: 0;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    font-size: 13px;
+    flex: 1;
+    background: transparent;
+    font-family: inherit;
+    color: #374151;
+}
+
+/* Table Card */
+.auditlog-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+.auditlog-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.auditlog-table thead {
+    background: #f9fafb;
+}
+
+.auditlog-table th {
+    text-align: left;
+    padding: 12px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.auditlog-table td {
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #374151;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+.auditlog-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.auditlog-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Action Badges */
+.audit-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.audit-badge.green {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.audit-badge.red {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.audit-badge.orange {
+    background: #ffedd5;
+    color: #9a3412;
+}
+
+.audit-badge.blue {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.audit-badge.purple {
+    background: #f3e8ff;
+    color: #6b21a8;
+}
+
+.audit-badge.pink {
+    background: #fce7f3;
+    color: #9d174d;
+}
+
+/* Performer cell */
+.performer {
+    display: flex;
+    flex-direction: column;
+}
+
+.performer strong {
+    color: #111827;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.performer span {
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 20px;
+    border-top: 1px solid #f3f4f6;
+}
+
+.page-btn {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #4b5563;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #f9fafb;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 4px;
+}
+
+.page-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    font-size: 13px;
+    cursor: pointer;
+    color: #4b5563;
+    font-family: inherit;
+}
+
+.page-num:hover {
+    background: #f3f4f6;
+}
+
+.page-num.active {
+    background: #065f46;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Empty state */
+.empty-row td {
+    text-align: center;
+    padding: 40px;
+    color: #9ca3af;
+}
