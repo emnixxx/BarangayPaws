@@ -1,54 +1,41 @@
-// dashboard.js — BarangayPaws Dashboard with dummy data
+// dashboard.js — BarangayPaws Dashboard
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    // ─── Dummy Data ───────────────────────────────────────────────
-    const dummyStats = {
-        totalPets: 1234,
-        pendingApprovals: 23,
-        vaccinated: 987,
-        deceased: 45,
+    // ─── Stats (empty — to be populated from backend) ────────────
+    const stats = {
+        totalPets: 0,
+        pendingApprovals: 0,
+        vaccinated: 0,
+        deceased: 0,
     };
 
-    const dummyRegistrations = {
-        labels: ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
-        data: [160, 175, 195, 245, 270, 310],
+    const registrations = {
+        labels: [],
+        data: [],
     };
 
-    const dummyPetTypes = {
-        dogs: 60,
-        cats: 40,
+    const petTypes = {
+        dogs: 0,
+        cats: 0,
     };
 
-    const dummyRates = {
-        vaccination: 80,
-        deworming: 65,
-        spayed: 45,
+    const rates = {
+        vaccination: 0,
+        deworming: 0,
+        spayed: 0,
     };
 
-    const dummyRecentPets = [
-        { name: 'Max',     owner: 'Maria Santos',  type: 'Dog', status: 'approved', date: 'Apr 7, 2026' },
-        { name: 'Whiskers',owner: 'Pedro Cruz',    type: 'Cat', status: 'approved', date: 'Apr 7, 2026' },
-        { name: 'Buddy',   owner: 'Ana Reyes',     type: 'Dog', status: 'pending',  date: 'Apr 6, 2026' },
-        { name: 'Luna',    owner: 'Jose Garcia',   type: 'Cat', status: 'approved', date: 'Apr 6, 2026' },
-        { name: 'Charlie', owner: 'Rosa Lopez',    type: 'Dog', status: 'pending',  date: 'Apr 5, 2026' },
-    ];
-
-    const dummyAuditLogs = [
-        { type: 'pet-approved', label: 'Pet Approved',       desc: 'Max registration approved by Admin',   time: '2 hours ago' },
-        { type: 'account',      label: 'Account Created',    desc: 'New resident Maria Santos registered',  time: '3 hours ago' },
-        { type: 'deceased',     label: 'Deceased Confirmed', desc: 'Bruno marked as deceased',              time: '5 hours ago' },
-        { type: 'announcement', label: 'Announcement Posted',desc: 'Libre Kapon event scheduled',           time: '1 day ago' },
-        { type: 'pet-approved', label: 'Pet Approved',       desc: 'Luna registration approved by Admin',   time: '1 day ago' },
-    ];
+    const recentPets = [];
+    const auditLogs = [];
 
     // ─── Render Stat Cards ────────────────────────────────────────
     const statCards = document.querySelectorAll('[data-stat]');
     statCards.forEach(card => {
         const key = card.dataset.stat;
-        if (dummyStats[key] !== undefined) {
+        if (stats[key] !== undefined) {
             const el = card.querySelector('[data-value]');
-            if (el) animateCount(el, dummyStats[key]);
+            if (el) animateCount(el, stats[key]);
         }
     });
 
@@ -71,9 +58,9 @@ document.addEventListener('DOMContentLoaded', function () {
         new Chart(regCtx, {
             type: 'line',
             data: {
-                labels: dummyRegistrations.labels,
+                labels: registrations.labels,
                 datasets: [{
-                    data: dummyRegistrations.data,
+                    data: registrations.data,
                     borderColor: '#2d8a5e',
                     borderWidth: 2.5,
                     pointBackgroundColor: '#2d8a5e',
@@ -99,8 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         ticks: { font: { family: 'Plus Jakarta Sans', size: 11 }, color: '#90afa3' }
                     },
                     y: {
-                        beginAtZero: false,
-                        min: 80,
+                        beginAtZero: true,
                         grid: { color: '#e3ede8' },
                         ticks: { font: { family: 'Plus Jakarta Sans', size: 11 }, color: '#90afa3' }
                     }
@@ -117,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: ['Dog', 'Cat'],
                 datasets: [{
-                    data: [dummyPetTypes.dogs, dummyPetTypes.cats],
+                    data: [petTypes.dogs, petTypes.cats],
                     backgroundColor: ['#1a3a2a', '#e07030'],
                     borderWidth: 0,
                     hoverOffset: 6,
@@ -149,33 +135,41 @@ document.addEventListener('DOMContentLoaded', function () {
     // ─── Render Recent Pets Table ─────────────────────────────────
     const petTableBody = document.getElementById('pet-table-body');
     if (petTableBody) {
-        petTableBody.innerHTML = dummyRecentPets.map(pet => `
-            <tr>
-                <td>
-                    <div class="pet-name">${pet.name}</div>
-                    <div class="pet-owner">${pet.owner}</div>
-                </td>
-                <td>${pet.type}</td>
-                <td><span class="badge ${pet.status}">${capitalize(pet.status)}</span></td>
-                <td>${pet.date}</td>
-            </tr>
-        `).join('');
+        if (recentPets.length === 0) {
+            petTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:24px; color:#9ca3af;">No recent registrations</td></tr>`;
+        } else {
+            petTableBody.innerHTML = recentPets.map(pet => `
+                <tr>
+                    <td>
+                        <div class="pet-name">${pet.name}</div>
+                        <div class="pet-owner">${pet.owner}</div>
+                    </td>
+                    <td>${pet.type}</td>
+                    <td><span class="badge ${pet.status}">${capitalize(pet.status)}</span></td>
+                    <td>${pet.date}</td>
+                </tr>
+            `).join('');
+        }
     }
 
     // ─── Render Audit Logs ────────────────────────────────────────
     const auditList = document.getElementById('audit-list');
     if (auditList) {
-        auditList.innerHTML = dummyAuditLogs.map(log => `
-            <div class="audit-item">
-                <div class="audit-icon-wrap">
-                    <span class="audit-badge ${log.type}">${log.label}</span>
+        if (auditLogs.length === 0) {
+            auditList.innerHTML = `<div style="text-align:center; padding:24px; color:#9ca3af;">No recent activity</div>`;
+        } else {
+            auditList.innerHTML = auditLogs.map(log => `
+                <div class="audit-item">
+                    <div class="audit-icon-wrap">
+                        <span class="audit-badge ${log.type}">${log.label}</span>
+                    </div>
+                    <div>
+                        <div class="audit-desc">${log.desc}</div>
+                        <div class="audit-time">${log.time}</div>
+                    </div>
                 </div>
-                <div>
-                    <div class="audit-desc">${log.desc}</div>
-                    <div class="audit-time">${log.time}</div>
-                </div>
-            </div>
-        `).join('');
+            `).join('');
+        }
     }
 
     // ─── Helpers ─────────────────────────────────────────────────

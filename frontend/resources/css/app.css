@@ -3,7 +3,8 @@
 @import './residents.css';
 @import './pets.css';
 @import './approvals.css';
-@import './announcements.css';
+@import './announcements.css'; 
+@import './auditlog.css';
 
 @tailwind base;
 @tailwind components;

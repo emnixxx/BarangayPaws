@@ -4,6 +4,7 @@ import './residents.js';
 import './pets.js';
 import './approvals.js';
 import './announcements.js';
+import './auditlog.js';
 
 import Alpine from 'alpinejs';
 

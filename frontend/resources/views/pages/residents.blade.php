@@ -20,14 +20,21 @@
                     </svg>
                     <span class="topbar-notif-dot"></span>
                 </button>
-                <div class="topbar-avatar" title="{{ auth()->user()->name ?? 'Juan Dela Cruz' }}">
-                    {{ strtoupper(substr(auth()->user()->name ?? 'JD', 0, 2)) }}
+                <div class="topbar-avatar" title="{{ auth()->user()->user_name ?? 'Admin' }}">
+                    {{ strtoupper(substr(auth()->user()->user_name ?? 'AD', 0, 2)) }}
                 </div>
             </div>
         </header>
 
         {{-- Page Content --}}
         <main class="page-content">
+
+            {{-- Success Flash --}}
+            @if(session('success'))
+                <div style="background:#d1fae5; color:#065f46; padding:10px 16px; border-radius:8px; margin-bottom:16px;">
+                    {{ session('success') }}
+                </div>
+            @endif
 
             {{-- Search Bar --}}
             <div class="residents-search-bar">
@@ -41,7 +48,7 @@
             {{-- Residents Table Card --}}
             <div class="residents-card">
                 <div class="residents-card-header">
-                    <h2 class="residents-card-title">All Residents</h2>
+                    <h2 class="residents-card-title">All Residents ({{ $residents->count() }})</h2>
                 </div>
 
                 <table class="residents-table">
@@ -57,220 +64,120 @@
                         </tr>
                     </thead>
                     <tbody id="residents-table-body">
-                        <tr>
-                            <td>
-                                <div class="resident-name-cell">
-                                    <div class="resident-avatar" style="background:#1a3a2a; border-color:#4caf7d;">JDC</div>
-                                    <span class="resident-fullname">Juan Dela Cruz</span>
-                                </div>
-                            </td>
-                            <td>juan.delacruz@email.com</td>
-                            <td>0917-111-2222</td>
-                            <td>123 Main St, Brgy. San Jose</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>Jan 15, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view-btn" data-id="1" title="View">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-btn delete-btn" data-id="1" title="Delete">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"/>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="resident-name-cell">
-                                    <div class="resident-avatar" style="background:#2d8a5e; border-color:#4caf7d;">RL</div>
-                                    <span class="resident-fullname">Rosa Lopez</span>
-                                </div>
-                            </td>
-                            <td>rosa.lopez@email.com</td>
-                            <td>0918-222-3333</td>
-                            <td>456 Oak Ave, Brgy. San Jose</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>Jan 20, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view-btn" data-id="2" title="View">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-btn delete-btn" data-id="2" title="Delete">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"/>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="resident-name-cell">
-                                    <div class="resident-avatar" style="background:#e07030; border-color:#e07030;">JG</div>
-                                    <span class="resident-fullname">Jose Garcia</span>
-                                </div>
-                            </td>
-                            <td>jose.garcia@email.com</td>
-                            <td>0919-333-4444</td>
-                            <td>789 Pine Rd, Brgy. San Jose</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>Feb 3, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view-btn" data-id="3" title="View">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-btn delete-btn" data-id="3" title="Delete">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"/>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="resident-name-cell">
-                                    <div class="resident-avatar" style="background:#7c5cbf; border-color:#7c5cbf;">CR</div>
-                                    <span class="resident-fullname">Carmen Reyes</span>
-                                </div>
-                            </td>
-                            <td>carmen.reyes@email.com</td>
-                            <td>0920-444-5555</td>
-                            <td>321 Elm St, Brgy. San Jose</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>Feb 18, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view-btn" data-id="4" title="View">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-btn delete-btn" data-id="4" title="Delete">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"/>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="resident-name-cell">
-                                    <div class="resident-avatar" style="background:#2e7bbf; border-color:#2e7bbf;">MS</div>
-                                    <span class="resident-fullname">Miguel Santos</span>
-                                </div>
-                            </td>
-                            <td>miguel.santos@email.com</td>
-                            <td>0921-555-6666</td>
-                            <td>654 Birch Ln, Brgy. San Jose</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>Mar 5, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view-btn" data-id="5" title="View">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-btn delete-btn" data-id="5" title="Delete">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"/>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="resident-name-cell">
-                                    <div class="resident-avatar" style="background:#1a9e8e; border-color:#1a9e8e;">EC</div>
-                                    <span class="resident-fullname">Elena Cruz</span>
-                                </div>
-                            </td>
-                            <td>elena.cruz@email.com</td>
-                            <td>0922-666-7777</td>
-                            <td>987 Maple Dr, Brgy. San Jose</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>Mar 12, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view-btn" data-id="6" title="View">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-btn delete-btn" data-id="6" title="Delete">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"/>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="resident-name-cell">
-                                    <div class="resident-avatar" style="background:#1a3a2a; border-color:#4caf7d;">RL</div>
-                                    <span class="resident-fullname">Roberto Lopez</span>
-                                </div>
-                            </td>
-                            <td>roberto.lopez@email.com</td>
-                            <td>0923-777-8888</td>
-                            <td>147 Cedar Ct, Brgy. San Jose</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>Mar 25, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view-btn" data-id="7" title="View">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-btn delete-btn" data-id="7" title="Delete">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"/>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                        @forelse($residents as $resident)
+                            <tr
+                                data-id="{{ $resident->user_id }}"
+                                data-name="{{ $resident->user_name }}"
+                                data-email="{{ $resident->email }}"
+                                data-gender="{{ $resident->gender }}"
+                                data-contact="{{ $resident->contact_num }}"
+                                data-address="{{ $resident->address }}"
+                                data-joined="{{ \Carbon\Carbon::parse($resident->date_registered)->format('M j, Y') }}"
+                                data-pets='@json($resident->pets ?? [])'
+                            >
+                                <td>
+                                    <div class="resident-name-cell">
+                                        <div class="resident-avatar" style="background:#1a3a2a; border-color:#4caf7d;">
+                                            {{ strtoupper(substr($resident->user_name, 0, 2)) }}
+                                        </div>
+                                        <span class="resident-fullname">{{ $resident->user_name }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ $resident->email }}</td>
+                                <td>{{ $resident->contact_num }}</td>
+                                <td>{{ $resident->address }}</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>{{ \Carbon\Carbon::parse($resident->date_registered)->format('M j, Y') }}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn view-btn" data-id="{{ $resident->user_id }}" title="View">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                                <circle cx="12" cy="12" r="3"/>
+                                            </svg>
+                                        </button>
+                                        <form method="POST" action="{{ route('residents.destroy', $resident->user_id) }}" style="display:inline;" onsubmit="return confirm('Delete {{ $resident->user_name }}?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="action-btn delete-btn" title="Delete">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="3 6 5 6 21 6"/>
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" style="text-align:center; padding:40px; color:#9ca3af;">
+                                    No residents found
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
 
         </main>
+    </div>
+</div>
+
+{{-- ─── View Details Modal ─── --}}
+<div class="modal-overlay" id="resident-view-modal">
+    <div class="modal-container" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3 class="modal-title">Resident Details</h3>
+            <button class="modal-close" data-close>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:20px;">
+            <div class="resident-avatar" id="modal-avatar" style="background:#1a3a2a; border-color:#4caf7d; width:54px; height:54px; font-size:18px;"></div>
+            <div>
+                <div id="modal-name" style="font-size:18px; font-weight:700; color:#111827;"></div>
+                <span class="status-badge active">Active Resident</span>
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px 24px; margin-bottom:20px;">
+            <div>
+                <div style="font-size:11px; color:#9ca3af; text-transform:uppercase; margin-bottom:2px;">Email</div>
+                <div id="modal-email" style="font-size:14px; color:#374151;"></div>
+            </div>
+            <div>
+                <div style="font-size:11px; color:#9ca3af; text-transform:uppercase; margin-bottom:2px;">Gender</div>
+                <div id="modal-gender" style="font-size:14px; color:#374151;"></div>
+            </div>
+            <div>
+                <div style="font-size:11px; color:#9ca3af; text-transform:uppercase; margin-bottom:2px;">Contact Number</div>
+                <div id="modal-contact" style="font-size:14px; color:#374151;"></div>
+            </div>
+            <div>
+                <div style="font-size:11px; color:#9ca3af; text-transform:uppercase; margin-bottom:2px;">Date Joined</div>
+                <div id="modal-joined" style="font-size:14px; color:#374151;"></div>
+            </div>
+            <div style="grid-column:1 / -1;">
+                <div style="font-size:11px; color:#9ca3af; text-transform:uppercase; margin-bottom:2px;">Address</div>
+                <div id="modal-address" style="font-size:14px; color:#374151;"></div>
+            </div>
+        </div>
+
+        {{-- Pets section --}}
+        <div style="border-top:1px solid #e5e7eb; padding-top:16px;">
+            <h4 style="font-size:14px; font-weight:700; color:#111827; margin-bottom:10px;">
+                Registered Pets (<span id="modal-pets-count">0</span>)
+            </h4>
+            <div id="modal-pets-list" style="display:flex; flex-direction:column; gap:8px;">
+                {{-- Injected by JS --}}
+            </div>
+        </div>
+
     </div>
 </div>
 

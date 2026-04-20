@@ -28,7 +28,7 @@
             <span class="sidebar-nav-label">Dashboard</span>
         </a>
 
-        <a href="{{ route('residents.index') }}" class="sidebar-nav-item {{ request()->routeIs('residents.*') ? 'active' : '' }}">
+        <a href="{{ route('residents') }}" class="sidebar-nav-item {{ request()->routeIs('residents.*') ? 'active' : '' }}">
             <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                 <circle cx="9" cy="7" r="4"/>
@@ -38,7 +38,7 @@
             <span class="sidebar-nav-label">Residents</span>
         </a>
 
-        <a href="{{ route('pets.index') }}" class="sidebar-nav-item {{ request()->routeIs('pets.*') ? 'active' : '' }}">
+        <a href="{{ route('pets') }}" class="sidebar-nav-item {{ request()->routeIs('pets.*') ? 'active' : '' }}">
             <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="9" cy="7" r="2"/><circle cx="15" cy="7" r="2"/>
                 <circle cx="6" cy="13" r="2"/><circle cx="18" cy="13" r="2"/>
@@ -47,7 +47,7 @@
             <span class="sidebar-nav-label">Pets</span>
         </a>
 
-        <a href="{{ route('approvals.index') }}" class="sidebar-nav-item {{ request()->routeIs('approvals.*') ? 'active' : '' }}">
+        <a href="{{ route('approvals') }}" class="sidebar-nav-item {{ request()->routeIs('approvals.*') ? 'active' : '' }}">
             <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                 <polyline points="14 2 14 8 20 8"/>
@@ -59,7 +59,7 @@
             <span class="sidebar-badge">23</span>
         </a>
 
-        <a href="{{ route('announcements.index') }}" class="sidebar-nav-item {{ request()->routeIs('announcements.*') ? 'active' : '' }}">
+        <a href="{{ route('announcements') }}" class="sidebar-nav-item {{ request()->routeIs('announcements.*') ? 'active' : '' }}">
             <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/>
             </svg>
@@ -68,7 +68,7 @@
 
         <div class="sidebar-section-label">System</div>
 
-        <a href="#" class="sidebar-nav-item {{ request()->routeIs('audit-logs.*') ? 'active' : '' }}">
+        <a href="{{ route('auditlog') }}" class="sidebar-nav-item {{ request()->routeIs('auditlog*') ? 'active' : '' }}">
             <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
             </svg>
@@ -87,7 +87,7 @@
             <div class="sidebar-footer-name">{{ auth()->user()->name ?? 'Juan Dela Cruz' }}</div>
             <div class="sidebar-footer-role">Barangay Tech Officer</div>
         </div>
-        <form method="POST" action="#" style="display:contents">
+        <form method="POST" action="{{ route('logout') }}" style="display:contents">
             @csrf
             <button type="submit" class="sidebar-logout-btn" title="Log out">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

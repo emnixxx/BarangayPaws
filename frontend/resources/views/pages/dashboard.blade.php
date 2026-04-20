@@ -43,7 +43,6 @@
                         </div>
                     </div>
                     <div class="stat-card-value green" data-value>0</div>
-                    <div class="stat-card-sub"><span>+12%</span> from last month</div>
                 </div>
 
                 <div class="stat-card" data-stat="pendingApprovals">
@@ -58,7 +57,6 @@
                         </div>
                     </div>
                     <div class="stat-card-value orange" data-value>0</div>
-                    <div class="stat-card-sub">5 new today</div>
                 </div>
 
                 <div class="stat-card" data-stat="vaccinated">
@@ -72,7 +70,6 @@
                         </div>
                     </div>
                     <div class="stat-card-value blue" data-value>0</div>
-                    <div class="stat-card-sub">80% of total</div>
                 </div>
 
                 <div class="stat-card" data-stat="deceased">
@@ -85,7 +82,6 @@
                         </div>
                     </div>
                     <div class="stat-card-value purple" data-value>0</div>
-                    <div class="stat-card-sub">+3 this month</div>
                 </div>
             </div>
 
@@ -108,17 +104,17 @@
                             <canvas id="petTypeChart"></canvas>
                             <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;line-height:1.2">
                                 <div style="font-size:11px;color:var(--text-muted);font-weight:500;">Total</div>
-                                <div style="font-size:22px;font-weight:700;color:var(--text-primary);">1234</div>
+                                <div style="font-size:22px;font-weight:700;color:var(--text-primary);">0</div>
                             </div>
                         </div>
                         <div class="donut-legend">
                             <div class="legend-item">
                                 <div class="legend-dot" style="background:#1a3a2a"></div>
-                                Dog (60%)
+                                Dog (0%)
                             </div>
                             <div class="legend-item">
                                 <div class="legend-dot" style="background:#e07030"></div>
-                                Cat (40%)
+                                Cat (0%)
                             </div>
                         </div>
                     </div>
@@ -129,29 +125,29 @@
             <div class="rates-row">
                 <div class="rate-card">
                     <div class="rate-label">Vaccination Rate</div>
-                    <div class="rate-value green">80%</div>
+                    <div class="rate-value green">0%</div>
                     <div class="rate-bar-track">
-                        <div class="rate-bar-fill green" data-rate="80" style="width:0%"></div>
+                        <div class="rate-bar-fill green" data-rate="0" style="width:0%"></div>
                     </div>
-                    <div class="rate-sub">987 out of 1234 pets</div>
+                    <div class="rate-sub">0 out of 0 pets</div>
                 </div>
 
                 <div class="rate-card">
                     <div class="rate-label">Deworming Rate</div>
-                    <div class="rate-value teal">65%</div>
+                    <div class="rate-value teal">0%</div>
                     <div class="rate-bar-track">
-                        <div class="rate-bar-fill teal" data-rate="65" style="width:0%"></div>
+                        <div class="rate-bar-fill teal" data-rate="0" style="width:0%"></div>
                     </div>
-                    <div class="rate-sub">802 out of 1234 pets</div>
+                    <div class="rate-sub">0 out of 0 pets</div>
                 </div>
 
                 <div class="rate-card">
                     <div class="rate-label">Spayed / Neutered Rate</div>
-                    <div class="rate-value purple">45%</div>
+                    <div class="rate-value purple">0%</div>
                     <div class="rate-bar-track">
-                        <div class="rate-bar-fill purple" data-rate="45" style="width:0%"></div>
+                        <div class="rate-bar-fill purple" data-rate="0" style="width:0%"></div>
                     </div>
-                    <div class="rate-sub">555 out of 1234 pets</div>
+                    <div class="rate-sub">0 out of 0 pets</div>
                 </div>
             </div>
 
@@ -160,7 +156,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">Recent Pet Registrations</span>
-                        <a href="#" class="card-action">View all</a>
+                        <a href="{{ route('pets') }}" class="card-action">View all</a>
                     </div>
                     <table class="data-table">
                         <thead>
@@ -178,7 +174,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">Recent Audit Logs</span>
-                        <a href="#" class="card-action">View all</a>
+                        <a href="{{ route('auditlog')}}" class="card-action">View all</a>
                     </div>
                     <div class="audit-list" id="audit-list"></div>
                 </div>

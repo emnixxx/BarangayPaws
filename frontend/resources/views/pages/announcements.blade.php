@@ -28,7 +28,7 @@
 
         {{-- Page Content --}}
         <main class="page-content">
-            
+
             <div class="announcements-actions">
                 <button class="btn-primary" id="btn-new-announcement">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -51,78 +51,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="title-cell">Free Kapon Program for April</td>
-                            <td><span class="cat-badge kapon">Libre Kapon</span></td>
-                            <td class="light-text">Dogs & Cats</td>
-                            <td class="light-text">Apr 15, 2026</td>
-                            <td class="light-text">Barangay Health Center</td>
-                            <td class="light-text">Apr 1, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-icon-btn view" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                                    <button class="action-icon-btn edit" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                                    <button class="action-icon-btn delete" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="title-cell">Anti-Rabies Vaccination Drive</td>
-                            <td><span class="cat-badge vax">Vaccination</span></td>
-                            <td class="light-text">All Pets</td>
-                            <td class="light-text">Apr 20, 2026</td>
-                            <td class="light-text">Barangay Hall</td>
-                            <td class="light-text">Mar 28, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-icon-btn view" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                                    <button class="action-icon-btn edit" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                                    <button class="action-icon-btn delete" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="title-cell">Deworming Schedule for Q2</td>
-                            <td><span class="cat-badge deworm">Deworming</span></td>
-                            <td class="light-text">Dogs & Cats</td>
-                            <td class="light-text">Apr 25, 2026</td>
-                            <td class="light-text">Barangay Health Center</td>
-                            <td class="light-text">Mar 25, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-icon-btn view" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                                    <button class="action-icon-btn edit" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                                    <button class="action-icon-btn delete" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="title-cell">Pet Registration Reminder</td>
-                            <td><span class="cat-badge general">General</span></td>
-                            <td class="light-text">All Pets</td>
-                            <td class="light-text">Ongoing</td>
-                            <td class="light-text">Online/Barangay Hall</td>
-                            <td class="light-text">Mar 20, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-icon-btn view" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                                    <button class="action-icon-btn edit" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                                    <button class="action-icon-btn delete" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="title-cell">Spay and Neuter Benefits Seminar</td>
-                            <td><span class="cat-badge spay">Spay-Neuter</span></td>
-                            <td class="light-text">Pet Owners</td>
-                            <td class="light-text">Apr 10, 2026</td>
-                            <td class="light-text">Barangay Hall</td>
-                            <td class="light-text">Mar 15, 2026</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-icon-btn view" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                                    <button class="action-icon-btn edit" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                                    <button class="action-icon-btn delete" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
-                                </div>
+                            <td colspan="7" style="text-align:center; padding:40px; color:#9ca3af;">
+                                No announcements posted
                             </td>
                         </tr>
                     </tbody>
@@ -140,7 +70,7 @@
             <h3 class="modal-title" id="form-modal-title">Post New Announcement</h3>
             <button class="modal-close" data-close><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
-        
+
         <form>
             <div class="form-group">
                 <label class="form-label">Category</label>
@@ -183,31 +113,29 @@
             <button class="modal-close" data-close><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
 
-        <div class="view-modal-title" id="view-title">Free Kapon Program for April</div>
-        <div class="view-modal-badge"><span class="cat-badge" id="view-badge">Libre Kapon</span></div>
+        <div class="view-modal-title" id="view-title"></div>
+        <div class="view-modal-badge"><span class="cat-badge" id="view-badge"></span></div>
 
         <div class="view-details-grid">
             <div class="detail-item">
                 <span class="detail-label">Target Pet Type</span>
-                <span class="detail-val" id="view-target">Dogs & Cats</span>
+                <span class="detail-val" id="view-target"></span>
             </div>
             <div class="detail-item">
                 <span class="detail-label">Date of Event</span>
-                <span class="detail-val" id="view-date">Apr 15, 2026</span>
+                <span class="detail-val" id="view-date"></span>
             </div>
             <div class="detail-item">
                 <span class="detail-label">Location</span>
-                <span class="detail-val" id="view-loc">Barangay Health Center</span>
+                <span class="detail-val" id="view-loc"></span>
             </div>
             <div class="detail-item">
                 <span class="detail-label">Date Posted</span>
-                <span class="detail-val" id="view-posted">Apr 1, 2026</span>
+                <span class="detail-val" id="view-posted"></span>
             </div>
             <div class="detail-item detail-full">
                 <span class="detail-label" style="margin-bottom:4px;">Details</span>
-                <div class="detail-p">
-                    Free spay and neuter services for dogs and cats. Bring your pet registration and health records.
-                </div>
+                <div class="detail-p" id="view-details-text"></div>
             </div>
         </div>
 
