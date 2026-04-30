@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Pet;
 use App\Models\User;
+use App\Services\AuditLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -35,6 +36,8 @@ class ApprovalsController extends Controller
             'rejection_reason' => null,
         ]);
 
+        AuditLogger::log('Approved Resident', $resident->user_name, "Approved resident ID {$id}.");
+
         return back()->with('success', "Resident {$resident->user_name} approved.");
     }
 
@@ -50,6 +53,8 @@ class ApprovalsController extends Controller
             'rejection_reason' => $request->rejection_reason,
         ]);
 
+        AuditLogger::log('Rejected Resident', $resident->user_name, "Rejected resident ID {$id}. Reason: {$request->rejection_reason}");
+
         return back()->with('success', "Resident {$resident->user_name} rejected.");
     }
 
@@ -61,6 +66,8 @@ class ApprovalsController extends Controller
             'approved_at' => now(),
             'rejection_reason' => null,
         ]);
+
+        AuditLogger::log('Approved Pet', $pet->pet_name, "Approved pet ID {$id} belonging to owner ID {$pet->owner_id}.");
 
         return back()->with('success', "Pet {$pet->pet_name} approved.");
     }
@@ -76,6 +83,8 @@ class ApprovalsController extends Controller
             'status' => 'rejected',
             'rejection_reason' => $request->rejection_reason,
         ]);
+
+        AuditLogger::log('Rejected Pet', $pet->pet_name, "Rejected pet ID {$id}. Reason: {$request->rejection_reason}");
 
         return back()->with('success', "Pet {$pet->pet_name} rejected.");
     }

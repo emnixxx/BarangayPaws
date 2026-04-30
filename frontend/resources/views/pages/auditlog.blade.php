@@ -1,5 +1,4 @@
-@vite(['resources/css/app.css', 'resources/css/dashboard.css', 'resources/css/auditlog.css', 'resources/js/app.js', 'resources/js/auditlog.js'])
-<x-app-layout>
+@vite(['resources/css/app.css', 'resources/css/dashboard.css', 'resources/css/auditlog.css', 'resources/css/notifications.css', 'resources/js/app.js', 'resources/js/auditlog.js', 'resources/js/notifications.js'])<x-app-layout>
 
 <div class="dashboard-layout">
 
@@ -9,22 +8,7 @@
     {{-- Main Content --}}
     <div class="dashboard-main">
 
-        {{-- Topbar --}}
-        <header class="topbar">
-            <h1 class="topbar-title">Audit Logs</h1>
-            <div class="topbar-right">
-                <button class="topbar-icon-btn" title="Notifications">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                    </svg>
-                    <span class="topbar-notif-dot"></span>
-                </button>
-                <div class="topbar-avatar" title="{{ auth()->user()->name ?? 'Juan Dela Cruz' }}">
-                    {{ strtoupper(substr(auth()->user()->name ?? 'JD', 0, 2)) }}
-                </div>
-            </div>
-        </header>
+    @include('partials.topbar', ['title' => 'Audit Logs'])
 
         {{-- Page Content --}}
         <main class="page-content">
@@ -80,5 +64,9 @@
         </main>
     </div>
 </div>
+
+<script>
+    window.BackendAuditLogs = @json($logs);
+</script>
 
 </x-app-layout>

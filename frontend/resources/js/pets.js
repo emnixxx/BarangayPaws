@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('pets-search');
     const petsTable   = document.getElementById('all-pets-table');
     const viewModal   = document.getElementById('pet-view-modal');
+    const healthModal = document.getElementById('health-form-modal');
+    const healthForm  = document.getElementById('health-form');
     const filterBtns  = document.querySelectorAll('.summary-btn[data-filter]');
 
     if (!petsTable) return;
@@ -41,6 +43,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // View modal
     petsTable.addEventListener('click', (e) => {
+        // Edit Health modal
+        const editHealthBtn = e.target.closest('.action-icon-btn.edit-health');
+        if (editHealthBtn) {
+            const row = editHealthBtn.closest('tr');
+            if (!row) return;
+
+            const d = row.dataset;
+            healthForm.action = `/pets/${d.petId}/health`;
+
+            document.getElementById('input-vaccinated').checked = (d.vaccinated === '1');
+            document.getElementById('input-vac-date').value = d.vaccinatedDate || '';
+            document.getElementById('input-dewormed').checked = (d.dewormed === '1');
+            document.getElementById('input-dew-date').value = d.dewormedDate || '';
+            document.getElementById('input-spayed').checked = (d.spayed === '1');
+            document.getElementById('input-spa-date').value = d.spayedDate || '';
+            document.getElementById('input-health-notes').value = d.healthNotes || '';
+
+            healthModal.classList.add('active');
+            return;
+        }
+
         const viewBtn = e.target.closest('.action-icon-btn.view');
         if (!viewBtn) return;
 
@@ -97,9 +120,22 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => viewModal.classList.remove('active'));
     });
 
+    // Close health modal
+    document.querySelectorAll('[data-close-health]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (healthModal) healthModal.classList.remove('active');
+        });
+    });
+
     if (viewModal) {
         viewModal.addEventListener('click', (e) => {
             if (e.target === viewModal) viewModal.classList.remove('active');
+        });
+    }
+
+    if (healthModal) {
+        healthModal.addEventListener('click', (e) => {
+            if (e.target === healthModal) healthModal.classList.remove('active');
         });
     }
 });

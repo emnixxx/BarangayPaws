@@ -371,3 +371,75 @@ body {
         overflow-x: auto;
     }
 }
+
+/* ─── Approval status badges ─── */
+.status-badge.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge.rejected {
+    background: #fee2e2;
+    color: #991b1b;
+    cursor: help;
+}
+
+.status-badge.approved {
+    background: var(--green-light);
+    color: var(--green-accent);
+}
+
+/* ─── Pending row avatar ─── */
+.resident-avatar.pending {
+    background: #3a2a1a;
+    border-color: #f59e0b;
+}
+
+/* ─── Approve / Reject inline action buttons ─── */
+.action-btn.approve-btn {
+    color: #16a34a;
+}
+
+.action-btn.reject-btn {
+    color: #dc2626;
+}
+
+/* ─── Confirmation modal ─── */
+.confirm-modal-text {
+    color: #374151;
+    margin-bottom: 20px;
+}
+
+.confirm-modal-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.confirm-modal-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.confirm-modal-textarea:focus {
+    outline: none;
+    border-color: var(--green-accent);
+}
+
+.confirm-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.confirm-required {
+    color: #dc2626;
+}

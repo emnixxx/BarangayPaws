@@ -56,7 +56,7 @@
                 <polyline points="10 9 9 9 8 9"/>
             </svg>
             <span class="sidebar-nav-label">Approvals</span>
-            <span class="sidebar-badge">23</span>
+            <span class="sidebar-badge" id="sidebar-approvals-badge" style="display:none;">0</span>
         </a>
 
         <a href="{{ route('announcements') }}" class="sidebar-nav-item {{ request()->routeIs('announcements.*') ? 'active' : '' }}">

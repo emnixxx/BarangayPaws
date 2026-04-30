@@ -2,32 +2,14 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    // ─── Stats (empty — to be populated from backend) ────────────
-    const stats = {
-        totalPets: 0,
-        pendingApprovals: 0,
-        vaccinated: 0,
-        deceased: 0,
+    // ─── Stats (populated from backend) ────────────
+    const stats = window.BackendStats || {
+        totalPets: 0,pendingApprovals: 0,vaccinated: 0,deceased: 0
     };
-
-    const registrations = {
-        labels: [],
-        data: [],
-    };
-
-    const petTypes = {
-        dogs: 0,
-        cats: 0,
-    };
-
-    const rates = {
-        vaccination: 0,
-        deworming: 0,
-        spayed: 0,
-    };
-
-    const recentPets = [];
-    const auditLogs = [];
+    const registrations = window.BackendRegistrations || { labels: [], data: [] };
+    const petTypes = window.BackendPetTypes || { dogs: 0, cats: 0 };
+    const recentPets = window.BackendRecentPets || [];
+    const auditLogs = window.BackendAuditLogs || [];
 
     // ─── Render Stat Cards ────────────────────────────────────────
     const statCards = document.querySelectorAll('[data-stat]');
@@ -79,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
                 scales: {
                     x: {

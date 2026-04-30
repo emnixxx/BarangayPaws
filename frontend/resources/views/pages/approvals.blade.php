@@ -1,5 +1,4 @@
-@vite(['resources/css/app.css', 'resources/css/dashboard.css', 'resources/css/approvals.css', 'resources/js/app.js', 'resources/js/approvals.js'])
-<x-app-layout>
+@vite(['resources/css/app.css', 'resources/css/dashboard.css', 'resources/css/approvals.css', 'resources/css/notifications.css', 'resources/js/app.js', 'resources/js/approvals.js', 'resources/js/notifications.js'])<x-app-layout>
 
 <div class="dashboard-layout">
 
@@ -9,22 +8,7 @@
     {{-- Main Content --}}
     <div class="dashboard-main">
 
-        {{-- Topbar --}}
-        <header class="topbar">
-            <h1 class="topbar-title">Approvals</h1>
-            <div class="topbar-right">
-                <button class="topbar-icon-btn" title="Notifications">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                    </svg>
-                    <span class="topbar-notif-dot"></span>
-                </button>
-                <div class="topbar-avatar" title="{{ auth()->user()->user_name ?? 'Admin' }}">
-                    {{ strtoupper(substr(auth()->user()->user_name ?? 'AD', 0, 2)) }}
-                </div>
-            </div>
-        </header>
+ @include('partials.topbar', ['title' => 'Approvals'])
 
         {{-- Page Content --}}
         <main class="page-content">
@@ -78,6 +62,17 @@
                                 <td>{{ \Carbon\Carbon::parse($resident->date_registered)->format('M j, Y') }}</td>
                                 <td>
                                     <div class="action-buttons">
+                                        <button type="button" class="btn-view"
+                                            data-id="{{ $resident->user_id }}"
+                                            data-name="{{ $resident->user_name }}"
+                                            data-email="{{ $resident->email }}"
+                                            data-contact="{{ $resident->contact_num }}"
+                                            data-gender="{{ $resident->gender }}"
+                                            data-address="{{ $resident->address }}"
+                                            data-registered="{{ \Carbon\Carbon::parse($resident->date_registered)->format('M j, Y g:i A') }}">
+                                            <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            View
+                                        </button>
                                         <form method="POST" action="{{ route('approvals.resident.approve', $resident->user_id) }}" style="display:inline;">
                                             @csrf
                                             <button type="submit" class="btn-approve">
@@ -169,6 +164,46 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            {{-- Resident View Modal --}}
+            <div class="modal-overlay" id="residentViewModal">
+                <div class="modal-box">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Resident Details</h3>
+                        <button type="button" class="modal-close" id="closeResidentModal">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-avatar-wrap">
+                            <div class="modal-avatar" id="modalAvatar"></div>
+                            <div>
+                                <div class="modal-name" id="modalName"></div>
+                                <div class="modal-sub" id="modalEmail"></div>
+                            </div>
+                        </div>
+
+                        <div class="modal-grid">
+                            <div class="modal-field">
+                                <label>Contact Number</label>
+                                <span id="modalContact"></span>
+                            </div>
+                            <div class="modal-field">
+                                <label>Gender</label>
+                                <span id="modalGender"></span>
+                            </div>
+                            <div class="modal-field modal-field-full">
+                                <label>Address</label>
+                                <span id="modalAddress"></span>
+                            </div>
+                            <div class="modal-field modal-field-full">
+                                <label>Date Registered</label>
+                                <span id="modalRegistered"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </main>

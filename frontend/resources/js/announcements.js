@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const formTitle = document.getElementById('form-modal-title');
     const formSubmitBtn = document.getElementById('form-submit-btn');
+    const announcementForm = document.getElementById('announcement-form');
 
     // Overlay closes active modal
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
@@ -23,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close buttons
     document.querySelectorAll('[data-close]').forEach(btn => {
         btn.addEventListener('click', () => {
-            btn.closest('.modal-overlay').classList.remove('active');
+            const overlay = btn.closest('.modal-overlay');
+            if (overlay) overlay.classList.remove('active');
         });
     });
 
@@ -35,7 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
         btnNew.addEventListener('click', () => {
             formTitle.textContent = 'Post New Announcement';
             formSubmitBtn.textContent = 'Post';
-            // Also here we would clear the form inputs
+            announcementForm.action = '/announcements';
+            document.getElementById('form-method').value = 'POST';
+            
+            document.getElementById('input-title').value = '';
+            document.getElementById('input-category').value = '';
+            document.getElementById('input-target').value = 'other';
+            document.getElementById('input-date').value = '';
+            document.getElementById('input-location').value = '';
+            document.getElementById('input-details').value = '';
+
             formModal.classList.add('active');
         });
     }
@@ -45,48 +56,48 @@ document.addEventListener('DOMContentLoaded', () => {
         // Edit button
         const editBtn = e.target.closest('.action-icon-btn.edit');
         if (editBtn) {
-            e.stopPropagation(); // don't trigger row click
+            e.stopPropagation();
             formTitle.textContent = 'Edit Announcement';
             formSubmitBtn.textContent = 'Save Changes';
             
-            // Here we would populate inputs with row data
             const row = editBtn.closest('tr');
+            const id = row.querySelector('.title-cell').dataset.id;
+            announcementForm.action = `/announcements/${id}`;
+            document.getElementById('form-method').value = 'PUT';
+
             document.getElementById('input-title').value = row.querySelector('.title-cell').textContent.trim();
-            // ...
+            document.getElementById('input-category').value = row.querySelector('.category-val').textContent.trim();
+            
+            let targetType = row.querySelector('.target-val').textContent.trim().toLowerCase();
+            if (targetType === 'all' || targetType === 'all / other') targetType = 'other';
+            document.getElementById('input-target').value = targetType;
+            
+            document.getElementById('input-date').value = row.querySelector('.event-date-val').dataset.raw || '';
+            document.getElementById('input-location').value = row.querySelector('.location-val').textContent.trim();
+            document.getElementById('input-details').value = row.querySelector('.details-cell').textContent.trim();
             
             formModal.classList.add('active');
             return;
         }
 
-        // Delete button
-        const deleteBtn = e.target.closest('.action-icon-btn.delete');
-        if (deleteBtn) {
-            e.stopPropagation();
-            if(confirm("Are you sure you want to delete this announcement?")) {
-                console.log("Deleted");
-            }
-            return;
-        }
-
-        // View details (Clicking view button or title)
+        // View details
         const viewBtn = e.target.closest('.action-icon-btn.view');
-        const titleCell = e.target.closest('.title-cell');
-        if (viewBtn || titleCell) {
-            const row = (viewBtn || titleCell).closest('tr');
+        if (viewBtn) {
+            e.stopPropagation();
+            const row = viewBtn.closest('tr');
             
-            // Populate view modal with data (mocked)
             document.getElementById('view-title').textContent = row.querySelector('.title-cell').textContent.trim();
             
-            // Copy badge class and text
             const badge = row.querySelector('.cat-badge');
             const targetBadge = document.getElementById('view-badge');
             targetBadge.className = badge.className;
             targetBadge.textContent = badge.textContent;
 
-            document.getElementById('view-target').textContent = row.cells[2].textContent.trim();
-            document.getElementById('view-date').textContent = row.cells[3].textContent.trim();
-            document.getElementById('view-loc').textContent = row.cells[4].textContent.trim();
-            document.getElementById('view-posted').textContent = row.cells[5].textContent.trim();
+            document.getElementById('view-target').textContent = row.querySelector('.target-val').textContent.trim();
+            document.getElementById('view-date').textContent = row.querySelector('.event-date-val').textContent.trim();
+            document.getElementById('view-loc').textContent = row.querySelector('.location-val').textContent.trim();
+            document.getElementById('view-posted').textContent = row.querySelector('.posted-val').textContent.trim();
+            document.getElementById('view-details-text').textContent = row.querySelector('.details-cell').textContent.trim();
 
             viewModal.classList.add('active');
         }

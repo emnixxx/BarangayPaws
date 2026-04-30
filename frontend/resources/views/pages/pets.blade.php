@@ -1,5 +1,4 @@
-@vite(['resources/css/app.css', 'resources/css/dashboard.css', 'resources/css/pets.css', 'resources/js/app.js', 'resources/js/action-modals.js', 'resources/js/pets.js'])
-<x-app-layout>
+@vite(['resources/css/app.css', 'resources/css/dashboard.css', 'resources/css/pets.css', 'resources/css/notifications.css', 'resources/js/app.js', 'resources/js/pets.js', 'resources/js/notifications.js'])<x-app-layout>
 
 <div class="dashboard-layout">
 
@@ -8,21 +7,7 @@
 
     <div class="dashboard-main">
 
-        <header class="topbar">
-            <h1 class="topbar-title">Pets</h1>
-            <div class="topbar-right">
-                <button class="topbar-icon-btn" title="Notifications">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                    </svg>
-                    <span class="topbar-notif-dot"></span>
-                </button>
-                <div class="topbar-avatar" title="{{ auth()->user()->user_name ?? 'Admin' }}">
-                    {{ strtoupper(substr(auth()->user()->user_name ?? 'AD', 0, 2)) }}
-                </div>
-            </div>
-        </header>
+        @include('partials.topbar', ['title' => 'Pets'])
 
         <main class="page-content">
 
@@ -150,6 +135,9 @@
                                 data-dewormed="{{ $dew ? '1' : '0' }}"
                                 data-spayed="{{ $spa ? '1' : '0' }}"
                                 data-health-notes="{{ $h->description ?? '' }}"
+                                data-vaccinated-date="{{ $h->vaccinated_date ?? '' }}"
+                                data-dewormed-date="{{ $h->dewormed_date ?? '' }}"
+                                data-spayed-date="{{ $h->spayed_date ?? '' }}"
                             >
                                 <td>
                                     <div class="pet-name-cell">
@@ -171,11 +159,13 @@
                                 <td>{{ \Carbon\Carbon::parse($pet->registered_at)->format('M j, Y') }}</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="action-icon-btn view" title="View">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                                                 <circle cx="12" cy="12" r="3"/>
                                             </svg>
+                                        </button>
+                                        <button class="action-icon-btn edit-health" title="Edit Health Record">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                         </button>
                                         <form method="POST" action="{{ route('pets.destroy', $pet->pet_id) }}" style="display:inline;" onsubmit="return confirm('Delete {{ $pet->pet_name }}?');">
                                             @csrf
@@ -259,6 +249,57 @@
         <div class="modal-footer" style="margin-top:20px;">
             <button type="button" class="btn-outline btn-full" data-close-view>Close</button>
         </div>
+    </div>
+</div>
+
+{{-- Edit Health Record Modal --}}
+<div class="modal-overlay" id="health-form-modal">
+    <div class="modal-container form-modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Edit Health Record</h3>
+            <button class="modal-close" data-close-health type="button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+
+        <form method="POST" action="" id="health-form">
+            @csrf
+            
+            <div style="display:flex; align-items:center; gap: 8px; margin-bottom:12px;">
+                <input type="checkbox" id="input-vaccinated" name="vaccinated" value="1">
+                <label for="input-vaccinated" style="font-weight:600;">Vaccinated</label>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date (Optional)</label>
+                <input type="date" class="form-input" id="input-vac-date" name="vaccinated_date">
+            </div>
+
+            <div style="display:flex; align-items:center; gap: 8px; margin-bottom:12px; margin-top:16px;">
+                <input type="checkbox" id="input-dewormed" name="dewormed" value="1">
+                <label for="input-dewormed" style="font-weight:600;">Dewormed</label>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date (Optional)</label>
+                <input type="date" class="form-input" id="input-dew-date" name="dewormed_date">
+            </div>
+
+            <div style="display:flex; align-items:center; gap: 8px; margin-bottom:12px; margin-top:16px;">
+                <input type="checkbox" id="input-spayed" name="spayed_neutered" value="1">
+                <label for="input-spayed" style="font-weight:600;">Spayed / Neutered</label>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date (Optional)</label>
+                <input type="date" class="form-input" id="input-spa-date" name="spayed_date">
+            </div>
+
+            <div class="form-group" style="margin-top:16px;">
+                <label class="form-label">Health Notes / Description</label>
+                <textarea class="form-input form-textarea" id="input-health-notes" name="description" rows="3"></textarea>
+            </div>
+
+            <div class="modal-footer" style="margin-top:20px;">
+                <button type="button" class="btn-outline" data-close-health>Cancel</button>
+                <button type="submit" class="btn-submit">Save Changes</button>
+            </div>
+        </form>
     </div>
 </div>
 

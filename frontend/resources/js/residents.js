@@ -1,101 +1,120 @@
 /**
- * BarangayPaws – Residents Page JS
- * Handles search filter and view details modal (with pets).
+ * BarangayPaws – Approvals Page JS
+ * Handles tab switching and approve/reject modals for residents and pets.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('residents-search');
-    const tableBody   = document.getElementById('residents-table-body');
-    const viewModal   = document.getElementById('resident-view-modal');
+    const tabBtns      = document.querySelectorAll('.tab-btn');
+    const tabContents  = document.querySelectorAll('.tab-content');
+    const approveModal = document.getElementById('approve-confirm-modal');
+    const rejectModal  = document.getElementById('reject-confirm-modal');
+    const approveForm  = document.getElementById('approve-form');
+    const rejectForm   = document.getElementById('reject-form');
+    const approveName  = document.getElementById('approve-name');
+    const rejectName   = document.getElementById('reject-name');
+    const rejectReason = document.getElementById('rejection_reason');
 
-    if (!tableBody) return;
+    // ─── Tab Switching ───
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.dataset.target;
 
-    // ─── Live search / filter ───
-    if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value.toLowerCase().trim();
-            const rows  = tableBody.querySelectorAll('tr[data-id]');
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-            rows.forEach(row => {
-                const name    = row.dataset.name?.toLowerCase() || '';
-                const email   = row.dataset.email?.toLowerCase() || '';
-                const phone   = row.dataset.contact?.toLowerCase() || '';
-                const address = row.dataset.address?.toLowerCase() || '';
-
-                const matches = name.includes(query) || email.includes(query) || phone.includes(query) || address.includes(query);
-                row.style.display = matches ? '' : 'none';
+            tabContents.forEach(content => {
+                if (content.id === targetId) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
             });
         });
-    }
-
-    // ─── View button → open modal ───
-    tableBody.addEventListener('click', (e) => {
-        const viewBtn = e.target.closest('.view-btn');
-        if (!viewBtn) return;
-
-        const row = viewBtn.closest('tr');
-        if (!row) return;
-
-        const name = row.dataset.name || '';
-        const pets = JSON.parse(row.dataset.pets || '[]');
-
-        // Fill modal fields
-        document.getElementById('modal-avatar').textContent = name.substring(0, 2).toUpperCase();
-        document.getElementById('modal-name').textContent = name;
-        document.getElementById('modal-email').textContent = row.dataset.email || '—';
-        document.getElementById('modal-gender').textContent = row.dataset.gender || '—';
-        document.getElementById('modal-contact').textContent = row.dataset.contact || '—';
-        document.getElementById('modal-joined').textContent = row.dataset.joined || '—';
-        document.getElementById('modal-address').textContent = row.dataset.address || '—';
-
-        // Fill pets list
-        const petsList = document.getElementById('modal-pets-list');
-        document.getElementById('modal-pets-count').textContent = pets.length;
-
-        if (pets.length === 0) {
-            petsList.innerHTML = `<div style="text-align:center; padding:16px; color:#9ca3af; font-size:13px;">No pets registered</div>`;
-        } else {
-            petsList.innerHTML = pets.map(pet => {
-                const statusColors = {
-                    approved: { bg: '#d1fae5', text: '#065f46' },
-                    pending:  { bg: '#ffedd5', text: '#9a3412' },
-                    rejected: { bg: '#fee2e2', text: '#991b1b' },
-                    deceased: { bg: '#f3e8ff', text: '#6b21a8' },
-                };
-                const sc = statusColors[pet.status] || statusColors.pending;
-
-                return `
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:#f9fafb; border-radius:8px;">
-                        <div>
-                            <div style="font-size:14px; font-weight:600; color:#111827;">${pet.pet_name}</div>
-                            <div style="font-size:12px; color:#6b7280;">
-                                ${pet.pet_type.charAt(0).toUpperCase() + pet.pet_type.slice(1)}${pet.breed ? ' · ' + pet.breed : ''}
-                            </div>
-                        </div>
-                        <span style="background:${sc.bg}; color:${sc.text}; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:600; text-transform:capitalize;">
-                            ${pet.status}
-                        </span>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        viewModal.classList.add('active');
     });
 
-    // ─── Close modal ───
+    // ─── Approve buttons ───
+    document.querySelectorAll('.approve-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const type = e.currentTarget.dataset.type; // 'resident' or 'pet'
+            const id   = e.currentTarget.dataset.id;
+            const name = e.currentTarget.dataset.name;
+
+            approveForm.action = `/approvals/${type}/${id}/approve`;
+            approveName.textContent = name;
+            approveModal.classList.add('active');
+        });
+    });
+
+    // ─── Reject buttons ───
+    document.querySelectorAll('.reject-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const type = e.currentTarget.dataset.type;
+            const id   = e.currentTarget.dataset.id;
+            const name = e.currentTarget.dataset.name;
+
+            rejectForm.action = `/approvals/${type}/${id}/reject`;
+            rejectName.textContent = name;
+            rejectReason.value = '';
+            rejectModal.classList.add('active');
+        });
+    });
+
+    // ─── View details buttons ───
+    const residentModal = document.getElementById('resident-view-modal');
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const row = e.currentTarget.closest('tr');
+            if(!row) return;
+
+            const d = row.dataset;
+            document.getElementById('modal-name').textContent = d.name || 'N/A';
+            document.getElementById('modal-email').textContent = d.email || 'N/A';
+            document.getElementById('modal-gender').textContent = d.gender ? (d.gender.charAt(0).toUpperCase() + d.gender.slice(1)) : 'N/A';
+            document.getElementById('modal-contact').textContent = d.contact || 'N/A';
+            document.getElementById('modal-joined').textContent = d.joined || 'N/A';
+            document.getElementById('modal-address').textContent = d.address || 'N/A';
+            
+            const initials = d.name ? d.name.substring(0, 2).toUpperCase() : 'AD';
+            document.getElementById('modal-avatar').textContent = initials;
+
+            let pets = [];
+            try {
+                pets = JSON.parse(d.pets);
+            } catch(e) {}
+
+            document.getElementById('modal-pets-count').textContent = pets.length;
+            const petsList = document.getElementById('modal-pets-list');
+            if (pets.length === 0) {
+                petsList.innerHTML = `<div style="font-size:13px; color:#9ca3af; font-style:italic;">No pets registered</div>`;
+            } else {
+                petsList.innerHTML = pets.map(pet => `
+                    <div style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-weight:600; font-size:13px; color:#111827;">${pet.pet_name}</div>
+                            <div style="font-size:12px; color:#6b7280;">${pet.breed || ''} (${pet.pet_type || ''})</div>
+                        </div>
+                        <span class="status-badge ${pet.status === 'approved' ? 'approved' : (pet.status === 'pending' ? 'pending' : 'rejected')}">${pet.status ? (pet.status.charAt(0).toUpperCase() + pet.status.slice(1)) : ''}</span>
+                    </div>
+                `).join('');
+            }
+            
+            residentModal.classList.add('active');
+        });
+    });
+
+    // ─── Close modals ───
     document.querySelectorAll('[data-close]').forEach(btn => {
         btn.addEventListener('click', () => {
-            viewModal.classList.remove('active');
+            const modal = btn.closest('.modal-overlay');
+            if (modal) modal.classList.remove('active');
         });
     });
 
-    // Click overlay to close
-    if (viewModal) {
-        viewModal.addEventListener('click', (e) => {
-            if (e.target === viewModal) {
-                viewModal.classList.remove('active');
-            }
+    // ─── Click overlay to close ───
+    [approveModal, rejectModal, residentModal].forEach(modal => {
+        if (!modal) return;
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
         });
-    }
+    });
 });

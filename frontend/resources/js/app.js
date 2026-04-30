@@ -5,6 +5,7 @@ import './pets.js';
 import './approvals.js';
 import './announcements.js';
 import './auditlog.js';
+import './notifications.js';
 
 import Alpine from 'alpinejs';
 

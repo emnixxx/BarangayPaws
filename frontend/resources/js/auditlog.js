@@ -1,5 +1,5 @@
 // ===== Audit log data (populated from backend) =====
-const auditLogs = [];
+const auditLogs = window.BackendAuditLogs || [];
 
 // ===== Config =====
 const ROWS_PER_PAGE = 12;
