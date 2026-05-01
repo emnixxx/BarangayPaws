@@ -131,11 +131,19 @@
     padding: 3px 10px;
     border-radius: 12px;
 }
-.cat-badge.kapon { background: #f0ebff; color: #7c5cbf; }
-.cat-badge.vax { background: #e8f5ef; color: #2d8a5e; }
-.cat-badge.deworm { background: #ebfcf9; color: #20a08e; }
+.cat-badge.kapon,
+.cat-badge.libre_kapon { background: #f0ebff; color: #7c5cbf; }
+
+.cat-badge.vax,
+.cat-badge.vaccination { background: #e8f5ef; color: #2d8a5e; }
+
+.cat-badge.deworm,
+.cat-badge.deworming { background: #ebfcf9; color: #20a08e; }
+
 .cat-badge.general { background: #f2f5f7; color: #788a99; }
-.cat-badge.spay { background: #fff3eb; color: #e07030; }
+
+.cat-badge.spay,
+.cat-badge.spay_neuter { background: #fff3eb; color: #e07030; }
 
 /* ─── Action Buttons ─── */
 .action-buttons {

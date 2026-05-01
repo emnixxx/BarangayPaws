@@ -1,14 +1,29 @@
-@vite(['resources/css/app.css', 'resources/css/dashboard.css', 'resources/css/notifications.css', 'resources/js/app.js', 'resources/js/dashboard.js', 'resources/js/notifications.js'])
+                                @vite(['resources/css/app.css', 'resources/css/dashboard.css', 'resources/js/app.js', 'resources/js/dashboard.js'])
 <x-app-layout>
 
 <div class="dashboard-layout">
 
+    {{-- Sidebar --}}
     @include('partials.sidebar')
 
+    {{-- Main Content --}}
     <div class="dashboard-main">
 
-        @include('partials.topbar', ['title' => 'Dashboard'])
+        {{-- Topbar --}}
+        <header class="topbar">
+            <h1 class="topbar-title">Dashboard</h1>
+            <div class="topbar-right">
+                <button type="button" class="topbar-icon-btn" title="Notifications">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                    <span class="topbar-notif-dot"></span>
+                </button>
+            </div>
+        </header>
 
+        {{-- Page Content --}}
         <main class="page-content">
 
             {{-- ── Stat Cards ── --}}
@@ -67,17 +82,23 @@
                 </div>
             </div>
 
+            {{-- ── Charts Row ── --}}
             <div class="charts-row">
-                <div class="card">
+                <div class="card chart-card">
                     <div class="card-header">
                         <span class="card-title">Pet Registrations Over Time</span>
-                        <a href="{{ route('residents') }}" class="card-action">View all</a>
+                        <a href="{{ route('pets') }}" class="card-action">View all</a>
                     </div>
-                    <div style="position:relative; flex:1; width:100%; min-height:100px;">
+                    <div class="chart-canvas-wrap">
                         <canvas id="registrationChart"></canvas>
                     </div>
                 </div>
 
+                @php
+                    $petTotal = ($dogCount ?? 0) + ($catCount ?? 0);
+                    $dogPct = $petTotal > 0 ? round((($dogCount ?? 0) / $petTotal) * 100) : 0;
+                    $catPct = $petTotal > 0 ? round((($catCount ?? 0) / $petTotal) * 100) : 0;
+                @endphp
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">Pet Type Distribution</span>
@@ -87,69 +108,73 @@
                             <canvas id="petTypeChart"></canvas>
                             <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;line-height:1.2">
                                 <div style="font-size:11px;color:var(--text-muted);font-weight:500;">Total</div>
-                                <div style="font-size:22px;font-weight:700;color:var(--text-primary);">{{ $stats['totalPets'] }}</div>
+                                <div style="font-size:22px;font-weight:700;color:var(--text-primary);">{{ $petTotal }}</div>
                             </div>
                         </div>
                         <div class="donut-legend">
                             <div class="legend-item">
                                 <div class="legend-dot" style="background:#1a3a2a"></div>
-                                Dog ({{ $totalPets > 0 ? round(($petTypes['dogs'] / $totalPets) * 100) : 0 }}%)
+                                Dog ({{ $dogPct }}%)
                             </div>
                             <div class="legend-item">
                                 <div class="legend-dot" style="background:#e07030"></div>
-                                Cat ({{ $totalPets > 0 ? round(($petTypes['cats'] / $totalPets) * 100) : 0 }}%)
+                                Cat ({{ $catPct }}%)
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            {{-- ── Rate Cards ── --}}
             <div class="rates-row">
                 <div class="rate-card">
                     <div class="rate-label">Vaccination Rate</div>
-                    <div class="rate-value green">{{ $rates['vaccination'] }}%</div>
+                    <div class="rate-value green">{{ $vaccinationRate }}%</div>
                     <div class="rate-bar-track">
-                        <div class="rate-bar-fill green" data-rate="{{ $rates['vaccination'] }}" style="width:0%"></div>
+                        <div class="rate-bar-fill green" data-rate="{{ $vaccinationRate }}" style="width:0%"></div>
                     </div>
-                    <div class="rate-sub">{{ $rawCounts['vaccinated'] }} out of {{ $totalPets }} pets</div>
+                    <div class="rate-sub">{{ $vaccinatedPets }} out of {{ $totalPets }} pets</div>
                 </div>
 
                 <div class="rate-card">
                     <div class="rate-label">Deworming Rate</div>
-                    <div class="rate-value teal">{{ $rates['deworming'] }}%</div>
+                    <div class="rate-value teal">{{ $dewormingRate }}%</div>
                     <div class="rate-bar-track">
-                        <div class="rate-bar-fill teal" data-rate="{{ $rates['deworming'] }}" style="width:0%"></div>
+                        <div class="rate-bar-fill teal" data-rate="{{ $dewormingRate }}" style="width:0%"></div>
                     </div>
-                    <div class="rate-sub">{{ $rawCounts['dewormed'] }} out of {{ $totalPets }} pets</div>
+                    <div class="rate-sub">{{ $dewormedCount }} out of {{ $totalPets }} pets</div>
                 </div>
 
                 <div class="rate-card">
                     <div class="rate-label">Spayed / Neutered Rate</div>
-                    <div class="rate-value purple">{{ $rates['spayed'] }}%</div>
+                    <div class="rate-value purple">{{ $spayedRate }}%</div>
                     <div class="rate-bar-track">
-                        <div class="rate-bar-fill purple" data-rate="{{ $rates['spayed'] }}" style="width:0%"></div>
+                        <div class="rate-bar-fill purple" data-rate="{{ $spayedRate }}" style="width:0%"></div>
                     </div>
-                    <div class="rate-sub">{{ $rawCounts['spayed'] }} out of {{ $totalPets }} pets</div>
+                    <div class="rate-sub">{{ $spayedCount }} out of {{ $totalPets }} pets</div>
                 </div>
             </div>
 
+            {{-- ── Bottom Row ── --}}
             <div class="bottom-row">
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">Recent Pet Registrations</span>
                         <a href="{{ route('pets') }}" class="card-action">View all</a>
                     </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Pet / Owner</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pet-table-body"></tbody>
-                    </table>
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Pet / Owner</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pet-table-body"></tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -165,13 +190,22 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    window.BackendStats = @json($stats);
-    window.BackendRegistrations = @json($registrations);
-    window.BackendPetTypes = @json($petTypes);
-    window.BackendRecentPets = @json($recentPets);
-    window.BackendAuditLogs = @json($auditLogs);
+    window.dashboardStats = {
+        totalPets: {{ $totalPets ?? 0 }},
+        pendingApprovals: {{ $pendingApprovals ?? 0 }},
+        vaccinated: {{ $vaccinatedPets ?? 0 }},
+        deceased: {{ $deceasedPets ?? 0 }}
+    };
+    window.dashboardRegistrations = {
+        labels: @json($regLabels),
+        data: @json($regData)
+    };
+    window.dashboardPetTypes = {
+        dogs: {{ $dogCount ?? 0 }},
+        cats: {{ $catCount ?? 0 }}
+    };
+    window.dashboardRecentPets = @json($recentPets);
+    window.dashboardAuditLogs = @json($recentAuditLogs);
 </script>
-
 </x-app-layout>

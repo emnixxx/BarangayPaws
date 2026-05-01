@@ -1,4 +1,5 @@
-@vite(['resources/css/app.css', 'resources/css/dashboard.css', 'resources/css/approvals.css', 'resources/css/notifications.css', 'resources/js/app.js', 'resources/js/approvals.js', 'resources/js/notifications.js'])<x-app-layout>
+@vite(['resources/css/app.css', 'resources/css/dashboard.css', 'resources/css/approvals.css', 'resources/css/modals.css', 'resources/js/app.js', 'resources/js/action-modals.js', 'resources/js/approvals.js'])
+<x-app-layout>
 
 <div class="dashboard-layout">
 
@@ -8,7 +9,19 @@
     {{-- Main Content --}}
     <div class="dashboard-main">
 
- @include('partials.topbar', ['title' => 'Approvals'])
+        {{-- Topbar --}}
+        <header class="topbar">
+            <h1 class="topbar-title">Approvals</h1>
+            <div class="topbar-right">
+                <button type="button" class="topbar-icon-btn" title="Notifications">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                    <span class="topbar-notif-dot"></span>
+                </button>
+            </div>
+        </header>
 
         {{-- Page Content --}}
         <main class="page-content">
@@ -20,14 +33,20 @@
                 </div>
             @endif
 
-            {{-- Tabs --}}
-            <div class="approvals-tabs">
-                <button class="tab-btn active" data-target="residents-tab">
-                    Resident <span class="badge">{{ $pendingResidents->count() }}</span>
-                </button>
-                <button class="tab-btn" data-target="pets-tab">
-                    Pets <span class="badge">{{ $pendingPets->count() }}</span>
-                </button>
+            {{-- Tabs + Search --}}
+            <div class="approvals-toolbar" style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:16px;">
+                <div class="approvals-tabs" style="margin-bottom:0;">
+                    <button class="tab-btn active" data-target="residents-tab">
+                        Resident <span class="badge">{{ $pendingResidents->count() }}</span>
+                    </button>
+                    <button class="tab-btn" data-target="pets-tab">
+                        Pets <span class="badge">{{ $pendingPets->count() }}</span>
+                    </button>
+                </div>
+                <div class="search-box" style="background:#fff; border:1px solid #e5e7eb; border-radius:8px; height:38px; padding:0 14px; display:inline-flex; align-items:center; gap:8px; width:280px; box-sizing:border-box;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="approvals-search" placeholder="Search approvals..." autocomplete="off" style="border:none; outline:none; font-size:13px; flex:1; background:transparent; font-family:inherit; color:#374151; height:100%; line-height:1;">
+                </div>
             </div>
 
             {{-- 1: Residents Pending Approvals --}}
@@ -62,31 +81,22 @@
                                 <td>{{ \Carbon\Carbon::parse($resident->date_registered)->format('M j, Y') }}</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button type="button" class="btn-view"
-                                            data-id="{{ $resident->user_id }}"
-                                            data-name="{{ $resident->user_name }}"
-                                            data-email="{{ $resident->email }}"
-                                            data-contact="{{ $resident->contact_num }}"
-                                            data-gender="{{ $resident->gender }}"
-                                            data-address="{{ $resident->address }}"
-                                            data-registered="{{ \Carbon\Carbon::parse($resident->date_registered)->format('M j, Y g:i A') }}">
-                                            <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                            View
+                                        <button type="button" class="btn-approve"
+                                            data-action-confirm
+                                            data-url="{{ route('approvals.resident.approve', $resident->user_id) }}"
+                                            data-title="Approve Resident"
+                                            data-message="Are you sure you want to approve this user?">
+                                            <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                            Approve
                                         </button>
-                                        <form method="POST" action="{{ route('approvals.resident.approve', $resident->user_id) }}" style="display:inline;">
-                                            @csrf
-                                            <button type="submit" class="btn-approve">
-                                                <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                                Approve
-                                            </button>
-                                        </form>
-                                        <form method="POST" action="{{ route('approvals.resident.reject', $resident->user_id) }}" style="display:inline;" onsubmit="return confirm('Reject this resident?');">
-                                            @csrf
-                                            <button type="submit" class="btn-reject">
-                                                <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                                                Reject
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn-reject"
+                                            data-action-reject
+                                            data-url="{{ route('approvals.resident.reject', $resident->user_id) }}"
+                                            data-title="Reject Resident"
+                                            data-message="Please provide a reason for rejecting this user.">
+                                            <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                            Reject
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -125,7 +135,7 @@
                             <tr>
                                 <td>
                                     <div class="info-cell">
-                                        <div class="pet-avatar"></div>
+                                        @include('partials.pet-icon', ['type' => $pet->pet_type])
                                         <span class="info-name">{{ $pet->pet_name }}</span>
                                     </div>
                                 </td>
@@ -138,20 +148,22 @@
                                 <td>{{ \Carbon\Carbon::parse($pet->registered_at)->format('M j, Y') }}</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <form method="POST" action="{{ route('approvals.pet.approve', $pet->pet_id) }}" style="display:inline;">
-                                            @csrf
-                                            <button type="submit" class="btn-approve">
-                                                <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                                Approve
-                                            </button>
-                                        </form>
-                                        <form method="POST" action="{{ route('approvals.pet.reject', $pet->pet_id) }}" style="display:inline;" onsubmit="return confirm('Reject this pet?');">
-                                            @csrf
-                                            <button type="submit" class="btn-reject">
-                                                <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                                                Reject
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn-approve"
+                                            data-action-confirm
+                                            data-url="{{ route('approvals.pet.approve', $pet->pet_id) }}"
+                                            data-title="Approve Pet"
+                                            data-message="Are you sure you want to approve this pet?">
+                                            <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                            Approve
+                                        </button>
+                                        <button type="button" class="btn-reject"
+                                            data-action-reject
+                                            data-url="{{ route('approvals.pet.reject', $pet->pet_id) }}"
+                                            data-title="Reject Pet"
+                                            data-message="Please provide a reason for rejecting this pet.">
+                                            <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                            Reject
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -166,48 +178,10 @@
                 </table>
             </div>
 
-            {{-- Resident View Modal --}}
-            <div class="modal-overlay" id="residentViewModal">
-                <div class="modal-box">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Resident Details</h3>
-                        <button type="button" class="modal-close" id="closeResidentModal">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="modal-avatar-wrap">
-                            <div class="modal-avatar" id="modalAvatar"></div>
-                            <div>
-                                <div class="modal-name" id="modalName"></div>
-                                <div class="modal-sub" id="modalEmail"></div>
-                            </div>
-                        </div>
-
-                        <div class="modal-grid">
-                            <div class="modal-field">
-                                <label>Contact Number</label>
-                                <span id="modalContact"></span>
-                            </div>
-                            <div class="modal-field">
-                                <label>Gender</label>
-                                <span id="modalGender"></span>
-                            </div>
-                            <div class="modal-field modal-field-full">
-                                <label>Address</label>
-                                <span id="modalAddress"></span>
-                            </div>
-                            <div class="modal-field modal-field-full">
-                                <label>Date Registered</label>
-                                <span id="modalRegistered"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </main>
     </div>
 </div>
+
+@include('partials.action-modals')
 
 </x-app-layout>

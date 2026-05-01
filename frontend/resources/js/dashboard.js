@@ -1,15 +1,19 @@
 // dashboard.js — BarangayPaws Dashboard
 
-document.addEventListener('DOMContentLoaded', function () {
+function initDashboard() {
 
-    // ─── Stats (populated from backend) ────────────
-    const stats = window.BackendStats || {
-        totalPets: 0,pendingApprovals: 0,vaccinated: 0,deceased: 0
+    // ─── Stats (populated from backend via window.dashboardStats) ────────────
+    const stats = window.dashboardStats || {
+        totalPets: 0,
+        pendingApprovals: 0,
+        vaccinated: 0,
+        deceased: 0,
     };
-    const registrations = window.BackendRegistrations || { labels: [], data: [] };
-    const petTypes = window.BackendPetTypes || { dogs: 0, cats: 0 };
-    const recentPets = window.BackendRecentPets || [];
-    const auditLogs = window.BackendAuditLogs || [];
+
+    const registrations = window.dashboardRegistrations || { labels: [], data: [] };
+    const petTypes      = window.dashboardPetTypes     || { dogs: 0, cats: 0 };
+    const recentPets    = window.dashboardRecentPets   || [];
+    const auditLogs     = window.dashboardAuditLogs    || [];
 
     // ─── Render Stat Cards ────────────────────────────────────────
     const statCards = document.querySelectorAll('[data-stat]');
@@ -49,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     pointRadius: 4,
                     pointHoverRadius: 6,
                     fill: true,
-                    backgroundColor: function(ctx) {
+                    backgroundColor: function (ctx) {
                         const canvas = ctx.chart.ctx;
                         const gradient = canvas.createLinearGradient(0, 0, 0, 220);
                         gradient.addColorStop(0, 'rgba(45,138,94,0.18)');
@@ -137,18 +141,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ─── Render Audit Logs ────────────────────────────────────────
     const auditList = document.getElementById('audit-list');
+    const iconMap = { approved: '✓', deleted: '✕', created: '+' };
     if (auditList) {
         if (auditLogs.length === 0) {
-            auditList.innerHTML = `<div style="text-align:center; padding:24px; color:#9ca3af;">No recent activity</div>`;
+            auditList.innerHTML = `<div class="audit-empty">No recent activity</div>`;
         } else {
             auditList.innerHTML = auditLogs.map(log => `
                 <div class="audit-item">
-                    <div class="audit-icon-wrap">
-                        <span class="audit-badge ${log.type}">${log.label}</span>
-                    </div>
-                    <div>
+                    <div class="audit-icon-wrap ${log.type}">${iconMap[log.type] || '•'}</div>
+                    <div class="audit-body">
+                        <div class="audit-top-row">
+                            <span class="audit-badge ${log.type}">${log.label}</span>
+                            <span class="audit-time">${log.time}</span>
+                        </div>
                         <div class="audit-desc">${log.desc}</div>
-                        <div class="audit-time">${log.time}</div>
                     </div>
                 </div>
             `).join('');
@@ -160,4 +166,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDashboard);
+} else {
+    initDashboard();
+}

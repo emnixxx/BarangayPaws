@@ -20,17 +20,22 @@
 .filter-btn {
     background: #fff;
     border: 1px solid #e5e7eb;
-    padding: 8px 14px;
+    height: 38px;
+    padding: 0 14px;
     border-radius: 8px;
     font-size: 13px;
     color: #4b5563;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
     transition: border-color 0.15s, background 0.15s;
     font-family: inherit;
+    line-height: 1;
+    white-space: nowrap;
 }
+
+.filter-btn strong { color: #111827; font-weight: 600; }
 
 .filter-btn:hover {
     border-color: #9ca3af;
@@ -41,11 +46,13 @@
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
-    padding: 8px 14px;
-    display: flex;
+    height: 38px;
+    padding: 0 14px;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
     width: 280px;
+    box-sizing: border-box;
 }
 
 .search-box svg {
@@ -61,7 +68,50 @@
     background: transparent;
     font-family: inherit;
     color: #374151;
+    height: 100%;
+    padding: 0;
+    line-height: 1;
 }
+
+/* Filter dropdowns */
+.filter-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.filter-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    min-width: 160px;
+    padding: 4px;
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+}
+
+.filter-menu.filter-menu-right { left: auto; right: 0; }
+.filter-dropdown.open .filter-menu { display: flex; }
+
+.filter-menu button {
+    background: transparent;
+    border: none;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #4b5563;
+    cursor: pointer;
+    border-radius: 6px;
+    font-family: inherit;
+    transition: background 0.12s;
+}
+
+.filter-menu button:hover { background: #f3f4f6; }
+.filter-menu button.active { background: #ecfdf5; color: #065f46; font-weight: 600; }
 
 /* Table Card */
 .auditlog-card {
@@ -143,6 +193,62 @@
 .audit-badge.pink {
     background: #fce7f3;
     color: #9d174d;
+}
+
+/* ── Status badges (used for old/new status columns) ── */
+.audit-badge.approved {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.audit-badge.rejected,
+.audit-badge.deleted {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.audit-badge.pending {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.audit-badge.created {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+/* ── Old Status column (5th column): muted, dashed border with dot indicator ── */
+.auditlog-table td:nth-child(5) .audit-badge {
+    background: #f9fafb;
+    color: #6b7280;
+    border: 1px dashed #d1d5db;
+    padding-left: 20px;
+    position: relative;
+    font-weight: 500;
+    text-decoration: line-through;
+    text-decoration-color: rgba(107, 114, 128, 0.4);
+}
+
+.auditlog-table td:nth-child(5) .audit-badge::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #9ca3af;
+    transform: translateY(-50%);
+}
+
+.text-muted {
+    color: #9ca3af;
+    font-size: 12px;
+    font-style: italic;
 }
 
 /* Performer cell */

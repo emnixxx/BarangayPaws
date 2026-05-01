@@ -6,18 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeceasedReport extends Model
 {
-    protected $table = 'deceased_reports';
+    protected $table = 'reports';
     protected $primaryKey = 'report_id';
     public $timestamps = false;
 
     protected $fillable = [
         'pet_id',
-        'user_id',
-        'date_of_death',
-        'cause',
-        'status',
-        'approved_at',
-        'created_at',
+        'vaccinated',
+        'vaccinated_date',
+        'dewormed',
+        'dewormed_date',
+        'spayed_neutered',
+        'spayed_date',
+        'description',
+        'updated_at',
     ];
 
     public function pet()

@@ -1,6 +1,6 @@
 /**
  * BarangayPaws – Approvals Page JS
- * Handles tab switching, view modal, and action buttons.
+ * Handles tab switching and action buttons.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,10 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const targetId = btn.dataset.target;
-
+            
+            // Update buttons
             tabBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
+            // Update content
             tabContents.forEach(content => {
                 if (content.id === targetId) {
                     content.classList.add('active');
@@ -25,36 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ─── Resident View Modal ───
-    const modal = document.getElementById('residentViewModal');
-    const closeBtn = document.getElementById('closeResidentModal');
-    const viewBtns = document.querySelectorAll('.btn-view');
-
-    viewBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const d = btn.dataset;
-
-            document.getElementById('modalAvatar').textContent = (d.name || '').substring(0, 2).toUpperCase();
-            document.getElementById('modalName').textContent = d.name || '—';
-            document.getElementById('modalEmail').textContent = d.email || '—';
-            document.getElementById('modalContact').textContent = d.contact || '—';
-            document.getElementById('modalGender').textContent = d.gender ? d.gender.charAt(0).toUpperCase() + d.gender.slice(1) : '—';
-            document.getElementById('modalAddress').textContent = d.address || '—';
-            document.getElementById('modalRegistered').textContent = d.registered || '—';
-
-            modal.classList.add('active');
-        });
-    });
-
-    if (closeBtn) {
-        const closeModal = () => modal.classList.remove('active');
-
-        closeBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    // ─── Search ───
+    const searchInput = document.getElementById('approvals-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            const q = searchInput.value.toLowerCase().trim();
+            document.querySelectorAll('.tab-content table tbody tr').forEach(row => {
+                if (!q) { row.style.display = ''; return; }
+                const text = (row.textContent || '').toLowerCase();
+                row.style.display = text.includes(q) ? '' : 'none';
+            });
         });
     }
+
+    // Action handlers removed to allow action-modals.js to handle the actual form submission
 });

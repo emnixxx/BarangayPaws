@@ -1,10 +1,40 @@
 // ===== Audit log data (populated from backend) =====
-const auditLogs = window.BackendAuditLogs || [];
+const auditLogs = window.auditLogs || [];
 
 // ===== Config =====
 const ROWS_PER_PAGE = 12;
 let currentPage = 1;
 let filteredLogs = [...auditLogs];
+
+// ===== Filter state =====
+const activeFilters = {
+    sort:   'newest',
+    search: '',
+};
+
+// ===== Apply filters =====
+function applyFilters() {
+    const q = activeFilters.search.toLowerCase();
+
+    filteredLogs = auditLogs.filter(log => {
+        if (q) {
+            const hay = `${log.action} ${log.performer} ${log.target} ${log.details}`.toLowerCase();
+            if (!hay.includes(q)) return false;
+        }
+        return true;
+    });
+
+    // Sort
+    filteredLogs.sort((a, b) => {
+        const ta = a.created_iso ? new Date(a.created_iso).getTime() : 0;
+        const tb = b.created_iso ? new Date(b.created_iso).getTime() : 0;
+        return activeFilters.sort === 'oldest' ? ta - tb : tb - ta;
+    });
+
+    currentPage = 1;
+    renderTable();
+    renderPagination();
+}
 
 // ===== Render table rows =====
 function renderTable() {
@@ -16,14 +46,22 @@ function renderTable() {
     const pageData = filteredLogs.slice(start, end);
 
     if (pageData.length === 0) {
-        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">No logs found</td></tr>`;
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="7">No logs found</td></tr>`;
         return;
     }
 
+    const statusBadge = (val, raw) => {
+        if (!val || val === '—') return '<span class="text-muted">—</span>';
+        let cls = 'created';
+        if (raw === 'rejected' || raw === 'deleted') cls = 'deleted';
+        else if (raw === 'approved') cls = 'approved';
+        else if (raw === 'pending') cls = 'pending';
+        return `<span class="audit-badge ${cls}">${val}</span>`;
+    };
+
     tbody.innerHTML = pageData.map(log => `
         <tr>
-            <td>${log.timestamp}</td>
-            <td><span class="audit-badge ${log.badge}">${log.action}</span></td>
+            <td><strong>#${log.audit_id}</strong></td>
             <td>
                 <div class="performer">
                     <strong>${log.performer}</strong>
@@ -32,6 +70,9 @@ function renderTable() {
             </td>
             <td>${log.target}</td>
             <td>${log.details}</td>
+            <td>${statusBadge(log.old_status, log.old_badge)}</td>
+            <td>${statusBadge(log.new_status, log.new_badge)}</td>
+            <td>${log.timestamp}</td>
         </tr>
     `).join('');
 }
@@ -60,26 +101,51 @@ function renderPagination() {
     });
 }
 
-// ===== Init (wait for DOM) =====
-document.addEventListener('DOMContentLoaded', () => {
+// ===== Init (run immediately if DOM ready, else wait) =====
+function initAuditLog() {
     const searchInput = document.getElementById('searchInput');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
 
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            filteredLogs = auditLogs.filter(log =>
-                log.action.toLowerCase().includes(query) ||
-                log.performer.toLowerCase().includes(query) ||
-                log.target.toLowerCase().includes(query) ||
-                log.details.toLowerCase().includes(query)
-            );
-            currentPage = 1;
-            renderTable();
-            renderPagination();
+            activeFilters.search = e.target.value;
+            applyFilters();
         });
     }
+
+    // ── Filter dropdowns ──
+    document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+        const key       = dropdown.dataset.filter;
+        const btn       = dropdown.querySelector('.filter-btn');
+        const labelEl   = dropdown.querySelector('[data-filter-label]');
+        const menuItems = dropdown.querySelectorAll('.filter-menu button');
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // close other dropdowns
+            document.querySelectorAll('.filter-dropdown.open').forEach(d => {
+                if (d !== dropdown) d.classList.remove('open');
+            });
+            dropdown.classList.toggle('open');
+        });
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                menuItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                activeFilters[key] = item.dataset.value;
+                if (labelEl) labelEl.textContent = item.dataset.label || item.textContent;
+                dropdown.classList.remove('open');
+                applyFilters();
+            });
+        });
+    });
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.filter-dropdown.open').forEach(d => d.classList.remove('open'));
+    });
 
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
@@ -104,4 +170,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderTable();
     renderPagination();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAuditLog);
+} else {
+    initAuditLog();
+}

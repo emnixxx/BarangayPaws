@@ -234,6 +234,42 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    overflow: hidden;
+}
+
+.pet-avatar svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+.pet-avatar.pet-avatar-dog {
+    background: #fff1e3;
+    border-color: #ffd9b3;
+    color: #b95b14;
+}
+
+.pet-avatar.pet-avatar-cat {
+    background: #e3eef9;
+    border-color: #b9d3f0;
+    color: #1d4ed8;
+}
+
+.pet-avatar.pet-avatar-other {
+    background: #f3f4f6;
+    border-color: #e5e7eb;
+    color: #6b7280;
+}
+
+.pet-avatar.pet-avatar-lg {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+}
+
+.pet-avatar.pet-avatar-lg svg {
+    width: 32px;
+    height: 32px;
 }
 
 .pet-info {
@@ -302,7 +338,7 @@
 }
 
 .action-icon-btn {
-    width: 8px;
+    width: 28px;
     height: 28px;
     border-radius: 6px;
     border: none;

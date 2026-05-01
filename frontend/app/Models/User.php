@@ -29,8 +29,6 @@ class User extends Authenticatable
         'date_registered',
         'approved_at',
         'profile_icon',
-        'rejection_reason',
-
     ];
 
     protected $hidden = [

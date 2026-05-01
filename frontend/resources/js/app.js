@@ -1,11 +1,8 @@
 import './bootstrap';
-import './dashboard.js';
-import './residents.js';
-import './pets.js';
-import './approvals.js';
-import './announcements.js';
-import './auditlog.js';
-import './notifications.js';
+
+// Page-specific scripts are loaded by each page's own @vite() directive.
+// Importing them here would cause them to run twice on every page,
+// double-binding click handlers and duplicating form submissions.
 
 import Alpine from 'alpinejs';
 
