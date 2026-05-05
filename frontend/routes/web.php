@@ -42,6 +42,10 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::post('approvals/pet/{id}/approve', [ApprovalsController::class, 'approvePet'])->name('approvals.pet.approve');
     Route::post('approvals/pet/{id}/reject', [ApprovalsController::class, 'rejectPet'])->name('approvals.pet.reject');
 
+    // Profile Photo Approvals
+    Route::post('approvals/photo/{id}/approve', [\App\Http\Controllers\Admin\ProfilePhotoApprovalController::class, 'approve'])->name('approvals.photo.approve');
+    Route::post('approvals/photo/{id}/reject',  [\App\Http\Controllers\Admin\ProfilePhotoApprovalController::class, 'reject'])->name('approvals.photo.reject');
+
     Route::get('announcements', [\App\Http\Controllers\Admin\AnnouncementsController::class, 'index'])->name('announcements');
     Route::post('announcements', [\App\Http\Controllers\Admin\AnnouncementsController::class, 'store'])->name('announcements.store');
     Route::get('/auditlog', [\App\Http\Controllers\Admin\AuditlogController::class, 'index'])->name('auditlog');

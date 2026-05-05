@@ -41,4 +41,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Action handlers removed to allow action-modals.js to handle the actual form submission
+
+    // ─── Photo Lightbox ───
+    const lightboxModal       = document.getElementById('photo-lightbox-modal');
+    const lightboxCurrentImg  = document.getElementById('lightbox-current-img');
+    const lightboxCurrentEmpty = document.getElementById('lightbox-current-empty');
+    const lightboxNewImg      = document.getElementById('lightbox-new-img');
+    const closeLightboxBtn    = document.getElementById('close-lightbox');
+
+    if (lightboxModal) {
+        const closeLightbox = () => lightboxModal.classList.remove('active');
+
+        document.addEventListener('click', (e) => {
+            // Open lightbox on new-photo thumbnail click
+            const thumb = e.target.closest('[data-lightbox-new]');
+            if (thumb) {
+                const newSrc     = thumb.dataset.lightboxNew;
+                const currentSrc = thumb.dataset.currentPhoto;
+                const name       = thumb.dataset.residentName || 'Resident';
+
+                document.getElementById('lightbox-title').textContent = `${name} — Photo Comparison`;
+
+                lightboxNewImg.src = newSrc;
+
+                if (currentSrc) {
+                    lightboxCurrentImg.src = currentSrc;
+                    lightboxCurrentImg.style.display = 'block';
+                    lightboxCurrentEmpty.style.display = 'none';
+                } else {
+                    lightboxCurrentImg.style.display = 'none';
+                    lightboxCurrentEmpty.style.display = 'flex';
+                }
+
+                lightboxModal.classList.add('active');
+                return;
+            }
+
+            // Close on X button or backdrop click
+            if (e.target.closest('#close-lightbox') || e.target === lightboxModal) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    }
 });

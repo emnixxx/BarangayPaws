@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pet;
+use App\Models\ProfilePhotoRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,18 +24,25 @@ class ApprovalsController extends Controller
             ->orderBy('registered_at', 'desc')
             ->get();
 
-        return view('pages.approvals', compact('pendingResidents', 'pendingPets'));
+        $pendingPhotoRequests = ProfilePhotoRequest::with('resident')
+            ->where('status', 'pending')
+            ->orderBy('requested_at', 'desc')
+            ->get();
+
+        return view('pages.approvals', compact('pendingResidents', 'pendingPets', 'pendingPhotoRequests'));
     }
 
     public function getPendingCount()
     {
         $pendingResidents = User::where('role', 'resident')->where('status', 'pending')->count();
-        $pendingPets = Pet::where('status', 'pending')->count();
+        $pendingPets      = Pet::where('status', 'pending')->count();
+        $pendingPhotos    = ProfilePhotoRequest::where('status', 'pending')->count();
 
         return response()->json([
-            'count' => $pendingResidents + $pendingPets,
+            'count'     => $pendingResidents + $pendingPets + $pendingPhotos,
             'residents' => $pendingResidents,
-            'pets' => $pendingPets
+            'pets'      => $pendingPets,
+            'photos'    => $pendingPhotos,
         ]);
     }
 
@@ -70,12 +78,28 @@ class ApprovalsController extends Controller
                 ];
             });
 
-        $items = $residents->concat($pets)->values();
+        $photos = ProfilePhotoRequest::with('resident:user_id,user_name')
+            ->where('status', 'pending')
+            ->orderByDesc('requested_at')
+            ->limit(10)
+            ->get()
+            ->map(function ($r) {
+                return [
+                    'type'  => 'photo',
+                    'id'    => $r->id,
+                    'title' => optional($r->resident)->user_name ?? 'Unknown resident',
+                    'sub'   => 'Profile photo change request',
+                    'time'  => $r->requested_at ? $r->requested_at->diffForHumans() : '',
+                ];
+            });
+
+        $items = $residents->concat($pets)->concat($photos)->values();
 
         return response()->json([
             'count'           => $items->count(),
             'residents_count' => $residents->count(),
             'pets_count'      => $pets->count(),
+            'photos_count'    => $photos->count(),
             'items'           => $items,
         ]);
     }
